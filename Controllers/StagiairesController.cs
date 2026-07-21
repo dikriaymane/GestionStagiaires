@@ -28,5 +28,9 @@ namespace GestionStagiaires.Controllers
 
             return View(stagiaires);
         }
+                public IActionResult Create()
+        {
+            return View();
+        }
     }
 }
