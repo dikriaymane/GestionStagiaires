@@ -279,3 +279,4 @@ C:\Users\user\Documents\ProjetStage\GestionStagiaires\obj\Debug\net10.0\refint\G
 C:\Users\user\Documents\ProjetStage\GestionStagiaires\obj\Debug\net10.0\GestionStagiaires.pdb
 C:\Users\user\Documents\ProjetStage\GestionStagiaires\obj\Debug\net10.0\GestionStagiaires.genruntimeconfig.cache
 C:\Users\user\Documents\ProjetStage\GestionStagiaires\obj\Debug\net10.0\ref\GestionStagiaires.dll
+C:\Users\user\Documents\ProjetStage\GestionStagiaires\obj\Debug\net10.0\GestionStagiaires.sourcelink.json

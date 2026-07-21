@@ -1,3 +1,22 @@
-<h1>Gestion des stagiaires</h1>
+@model List<GestionStagiaires.Models.Stagiaire>
 
-<p>Première version de l'application.</p>
+<h1>Liste des stagiaires</h1>
+
+<table border="1">
+    <tr>
+        <th>Identifiant</th>
+        <th>Nom</th>
+        <th>Prénom</th>
+        <th>Email</th>
+    </tr>
+
+    @foreach (var stagiaire in Model)
+    {
+        <tr>
+            <td>@stagiaire.Id</td>
+            <td>@stagiaire.Nom</td>
+            <td>@stagiaire.Prenom</td>
+            <td>@stagiaire.Email</td>
+        </tr>
+    }
+</table>
