@@ -2,24 +2,27 @@
 
 <h1>Ajouter un stagiaire</h1>
 
-<form>
+<form asp-controller="Stagiaires"
+      asp-action="Create"
+      method="post">
+
     <div>
-        <label>Nom</label>
-        <input type="text" name="Nom" />
+        <label asp-for="Nom"></label>
+        <input asp-for="Nom" />
     </div>
 
     <br />
 
     <div>
-        <label>Prénom</label>
-        <input type="text" name="Prenom" />
+        <label asp-for="Prenom"></label>
+        <input asp-for="Prenom" />
     </div>
 
     <br />
 
     <div>
-        <label>Email</label>
-        <input type="email" name="Email" />
+        <label asp-for="Email"></label>
+        <input asp-for="Email" />
     </div>
 
     <br />
