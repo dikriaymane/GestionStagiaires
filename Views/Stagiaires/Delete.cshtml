@@ -1,19 +1,39 @@
 @model GestionStagiaires.Models.Stagiaire
 
-<h2>Supprimer un stagiaire</h2>
+<h1 class="mb-4">Supprimer un stagiaire</h1>
 
-<p>Voulez-vous vraiment supprimer ce stagiaire ?</p>
+<div class="alert alert-danger">
+    Voulez-vous vraiment supprimer ce stagiaire ?
+</div>
 
-<ul>
-    <li><strong>Nom :</strong> @Model.Nom</li>
-    <li><strong>Prénom :</strong> @Model.Prenom</li>
-    <li><strong>Email :</strong> @Model.Email</li>
-</ul>
+<div class="card mb-3">
+    <div class="card-body">
+        <p>
+            <strong>Nom :</strong>
+            @Model.Nom
+        </p>
+
+        <p>
+            <strong>Prénom :</strong>
+            @Model.Prenom
+        </p>
+
+        <p>
+            <strong>Email :</strong>
+            @Model.Email
+        </p>
+    </div>
+</div>
 
 <form asp-action="Delete" method="post">
+
     <input type="hidden" asp-for="Id" />
 
-    <button type="submit">Supprimer</button>
+    <button type="submit" class="btn btn-danger">
+        Confirmer la suppression
+    </button>
 
-    <a asp-action="Index">Annuler</a>
+    <a asp-action="Index" class="btn btn-secondary">
+        Annuler
+    </a>
 </form>

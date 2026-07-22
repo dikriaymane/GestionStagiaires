@@ -1,36 +1,48 @@
 @model GestionStagiaires.Models.Stagiaire
 
-<h1>Modifier un stagiaire</h1>
+<h1 class="mb-4">Modifier un stagiaire</h1>
 
 <form asp-action="Edit" method="post">
 
     <input type="hidden" asp-for="Id" />
 
-    <div>
-        <label asp-for="Nom"></label>
-        <input asp-for="Nom" />
-        <span asp-validation-for="Nom"></span>
+    <div asp-validation-summary="ModelOnly"
+         class="text-danger">
     </div>
 
-    <br />
-
-    <div>
-        <label asp-for="Prenom"></label>
-        <input asp-for="Prenom" />
-        <span asp-validation-for="Prenom"></span>
+    <div class="mb-3">
+        <label asp-for="Nom" class="form-label"></label>
+        <input asp-for="Nom" class="form-control" />
+        <span asp-validation-for="Nom"
+              class="text-danger">
+        </span>
     </div>
 
-    <br />
-
-    <div>
-        <label asp-for="Email"></label>
-        <input asp-for="Email" />
-        <span asp-validation-for="Email"></span>
+    <div class="mb-3">
+        <label asp-for="Prenom" class="form-label"></label>
+        <input asp-for="Prenom" class="form-control" />
+        <span asp-validation-for="Prenom"
+              class="text-danger">
+        </span>
     </div>
 
-    <br />
+    <div class="mb-3">
+        <label asp-for="Email" class="form-label"></label>
+        <input asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email"
+              class="text-danger">
+        </span>
+    </div>
 
-    <button type="submit">Enregistrer</button>
+    <button type="submit" class="btn btn-warning">
+        Enregistrer
+    </button>
 
-    <a asp-action="Index">Annuler</a>
+    <a asp-action="Index" class="btn btn-secondary">
+        Annuler
+    </a>
 </form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

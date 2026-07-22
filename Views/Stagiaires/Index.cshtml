@@ -1,46 +1,56 @@
 @model List<GestionStagiaires.Models.Stagiaire>
 
-<h1>Liste des stagiaires</h1>
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Liste des stagiaires</h1>
 
-<a asp-controller="Stagiaires"
-   asp-action="Create">
-    Ajouter un stagiaire
-</a>
+    <a asp-action="Create"
+       class="btn btn-primary">
+        Ajouter un stagiaire
+    </a>
+</div>
 
-<br />
-<br />
-
-<table border="1">
-    <thead>
-        <tr>
-            <th>Identifiant</th>
-            <th>Nom</th>
-            <th>Prénom</th>
-            <th>Email</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-
-    <tbody>
-        @foreach (var stagiaire in Model)
-        {
+@if (Model.Count == 0)
+{
+    <div class="alert alert-info">
+        Aucun stagiaire n'a encore été ajouté.
+    </div>
+}
+else
+{
+    <table class="table table-bordered table-striped">
+        <thead class="table-dark">
             <tr>
-                <td>@stagiaire.Id</td>
-                <td>@stagiaire.Nom</td>
-                <td>@stagiaire.Prenom</td>
-                <td>@stagiaire.Email</td>
-                <td>
-                    <a asp-action="Edit"
-                    asp-route-id="@stagiaire.Id">
-                        Modifier
-                    </a>
-                    |
-                    <a asp-action="Delete"
-                    asp-route-id="@stagiaire.Id">
-                        Supprimer
-                    </a>
-                </td>
+                <th>Identifiant</th>
+                <th>Nom</th>
+                <th>Prénom</th>
+                <th>Email</th>
+                <th>Actions</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+
+        <tbody>
+            @foreach (var stagiaire in Model)
+            {
+                <tr>
+                    <td>@stagiaire.Id</td>
+                    <td>@stagiaire.Nom</td>
+                    <td>@stagiaire.Prenom</td>
+                    <td>@stagiaire.Email</td>
+                    <td>
+                        <a asp-action="Edit"
+                           asp-route-id="@stagiaire.Id"
+                           class="btn btn-warning btn-sm">
+                            Modifier
+                        </a>
+
+                        <a asp-action="Delete"
+                           asp-route-id="@stagiaire.Id"
+                           class="btn btn-danger btn-sm">
+                            Supprimer
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
