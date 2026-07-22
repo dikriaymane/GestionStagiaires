@@ -15,25 +15,7 @@ namespace GestionStagiaires.Controllers
 
         public IActionResult Index()
         {
-            List<Stagiaire> stagiaires = new List<Stagiaire>
-            {
-                new Stagiaire
-                {
-                    Id = 1,
-                    Nom = "Dikri",
-                    Prenom = "Aymane",
-                    Email = "aymane@email.com"
-                },
-
-                new Stagiaire
-                {
-                    Id = 2,
-                    Nom = "Alami",
-                    Prenom = "Sara",
-                    Email = "sara@email.com"
-                }
-            };
-
+            List<Stagiaire> stagiaires = _context.Stagiaires.ToList();
             return View(stagiaires);
         }
                 [HttpGet]
