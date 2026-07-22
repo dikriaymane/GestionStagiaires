@@ -4,15 +4,40 @@
     <h1>Liste des stagiaires</h1>
 
     <a asp-action="Create"
-       class="btn btn-primary">
+       class="btn btn-success">
         Ajouter un stagiaire
     </a>
 </div>
 
-@if (Model.Count == 0)
+<form asp-action="Index"
+      method="get"
+      class="row g-2 mb-4">
+
+    <div class="col-md-5">
+        <input type="text"
+               name="recherche"
+               value="@ViewBag.Recherche"
+               class="form-control"
+               placeholder="Rechercher par nom, prénom ou email" />
+    </div>
+
+    <div class="col-auto">
+        <button type="submit"
+                class="btn btn-primary">
+            Rechercher
+        </button>
+
+        <a asp-action="Index"
+           class="btn btn-secondary">
+            Réinitialiser
+        </a>
+    </div>
+</form>
+
+@if (Model == null || Model.Count == 0)
 {
     <div class="alert alert-info">
-        Aucun stagiaire n'a encore été ajouté.
+        Aucun stagiaire trouvé.
     </div>
 }
 else

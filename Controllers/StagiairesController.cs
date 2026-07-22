@@ -13,9 +13,22 @@ namespace GestionStagiaires.Controllers
             _context = context;
         }
 
-        public IActionResult Index()
+       public IActionResult Index(string recherche)
         {
             List<Stagiaire> stagiaires = _context.Stagiaires.ToList();
+
+            if (!string.IsNullOrWhiteSpace(recherche))
+            {
+                stagiaires = stagiaires
+                    .Where(s =>
+                        s.Nom!.Contains(recherche) ||
+                        s.Prenom!.Contains(recherche) ||
+                        s.Email!.Contains(recherche))
+                    .ToList();
+            }
+
+            ViewBag.Recherche = recherche;
+
             return View(stagiaires);
         }
                 [HttpGet]
