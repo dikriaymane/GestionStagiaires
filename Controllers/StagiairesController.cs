@@ -13,23 +13,31 @@ namespace GestionStagiaires.Controllers
             _context = context;
         }
 
-       public IActionResult Index(string recherche)
+       public IActionResult Index(string? recherche, string? tri)
         {
-            List<Stagiaire> stagiaires = _context.Stagiaires.ToList();
+            var stagiaires = _context.Stagiaires.AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(recherche))
             {
-                stagiaires = stagiaires
-                    .Where(s =>
-                        s.Nom!.Contains(recherche) ||
-                        s.Prenom!.Contains(recherche) ||
-                        s.Email!.Contains(recherche))
-                    .ToList();
+                stagiaires = stagiaires.Where(s =>
+                    s.Nom!.Contains(recherche) ||
+                    s.Prenom!.Contains(recherche) ||
+                    s.Email!.Contains(recherche));
             }
 
-            ViewBag.Recherche = recherche;
+            stagiaires = tri switch
+            {
+                "nom" => stagiaires.OrderBy(s => s.Nom),
+                "prenom" => stagiaires.OrderBy(s => s.Prenom),
+                "email" => stagiaires.OrderBy(s => s.Email),
+                "id_desc" => stagiaires.OrderByDescending(s => s.Id),
+                _ => stagiaires.OrderBy(s => s.Id)
+            };
 
-            return View(stagiaires);
+            ViewBag.Recherche = recherche;
+            ViewBag.Tri = tri;
+
+            return View(stagiaires.ToList());
         }
                 [HttpGet]
                 public IActionResult Create()
