@@ -9,6 +9,19 @@
     </a>
 </div>
 
+@if (TempData["Succes"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["Succes"]
+
+        <button type="button"
+                class="btn-close"
+                data-bs-dismiss="alert"
+                aria-label="Fermer">
+        </button>
+    </div>
+}
+
 <form asp-action="Index"
       method="get"
       class="row g-2 mb-4">
@@ -103,7 +116,7 @@ else
             }
         </tbody>
     </table>
-    
+
     @if (ViewBag.NombrePages > 1)
     {
         <nav>

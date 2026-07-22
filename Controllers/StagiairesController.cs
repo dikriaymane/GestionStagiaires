@@ -1,9 +1,10 @@
 using GestionStagiaires.Models;
 using Microsoft.AspNetCore.Mvc;
 using GestionStagiaires.Data;
-
+using Microsoft.AspNetCore.Authorization;
 namespace GestionStagiaires.Controllers
 {
+    [Authorize]
     public class StagiairesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -61,6 +62,7 @@ namespace GestionStagiaires.Controllers
         }
 
        [HttpPost]
+    
         public IActionResult Create(Stagiaire stagiaire)
         {
             if (!ModelState.IsValid)
@@ -70,6 +72,8 @@ namespace GestionStagiaires.Controllers
 
             _context.Stagiaires.Add(stagiaire);
             _context.SaveChanges();
+
+            TempData["Succes"] = "Le stagiaire a été ajouté avec succès.";
 
             return RedirectToAction("Index");
         }
@@ -85,6 +89,7 @@ namespace GestionStagiaires.Controllers
 
             return View(stagiaire);
         }
+
         [HttpPost]
         public IActionResult Edit(Stagiaire stagiaire)
         {
@@ -96,8 +101,11 @@ namespace GestionStagiaires.Controllers
             _context.Stagiaires.Update(stagiaire);
             _context.SaveChanges();
 
+            TempData["Succes"] = "Le stagiaire a été modifié avec succès.";
+
             return RedirectToAction("Index");
         }
+
         [HttpGet]
         public IActionResult Delete(int id)
         {
@@ -110,7 +118,6 @@ namespace GestionStagiaires.Controllers
 
             return View(stagiaire);
         }
-
         [HttpPost, ActionName("Delete")]
         public IActionResult DeleteConfirmed(int id)
         {
@@ -120,6 +127,8 @@ namespace GestionStagiaires.Controllers
             {
                 _context.Stagiaires.Remove(stagiaire);
                 _context.SaveChanges();
+
+                TempData["Succes"] = "Le stagiaire a été supprimé avec succès.";
             }
 
             return RedirectToAction("Index");
