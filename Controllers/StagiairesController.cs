@@ -24,9 +24,14 @@ namespace GestionStagiaires.Controllers
             return View();
         }
 
-        [HttpPost]
+       [HttpPost]
         public IActionResult Create(Stagiaire stagiaire)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(stagiaire);
+            }
+
             _context.Stagiaires.Add(stagiaire);
             _context.SaveChanges();
 
@@ -44,10 +49,14 @@ namespace GestionStagiaires.Controllers
 
             return View(stagiaire);
         }
-
         [HttpPost]
         public IActionResult Edit(Stagiaire stagiaire)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(stagiaire);
+            }
+
             _context.Stagiaires.Update(stagiaire);
             _context.SaveChanges();
 

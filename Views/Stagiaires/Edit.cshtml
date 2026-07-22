@@ -2,15 +2,14 @@
 
 <h1>Modifier un stagiaire</h1>
 
-<form asp-controller="Stagiaires"
-      asp-action="Edit"
-      method="post">
+<form asp-action="Edit" method="post">
 
     <input type="hidden" asp-for="Id" />
 
     <div>
         <label asp-for="Nom"></label>
         <input asp-for="Nom" />
+        <span asp-validation-for="Nom"></span>
     </div>
 
     <br />
@@ -18,6 +17,7 @@
     <div>
         <label asp-for="Prenom"></label>
         <input asp-for="Prenom" />
+        <span asp-validation-for="Prenom"></span>
     </div>
 
     <br />
@@ -25,14 +25,12 @@
     <div>
         <label asp-for="Email"></label>
         <input asp-for="Email" />
+        <span asp-validation-for="Email"></span>
     </div>
 
     <br />
 
     <button type="submit">Enregistrer</button>
 
-    <a asp-controller="Stagiaires"
-       asp-action="Index">
-        Annuler
-    </a>
+    <a asp-action="Index">Annuler</a>
 </form>
