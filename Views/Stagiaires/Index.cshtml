@@ -103,4 +103,52 @@ else
             }
         </tbody>
     </table>
+    
+    @if (ViewBag.NombrePages > 1)
+    {
+        <nav>
+            <ul class="pagination">
+
+                @if (ViewBag.PageActuelle > 1)
+                {
+                    <li class="page-item">
+                        <a class="page-link"
+                        asp-action="Index"
+                        asp-route-page="@(ViewBag.PageActuelle - 1)"
+                        asp-route-recherche="@ViewBag.Recherche"
+                        asp-route-tri="@ViewBag.Tri">
+                            Précédent
+                        </a>
+                    </li>
+                }
+
+                @for (int i = 1; i <= ViewBag.NombrePages; i++)
+                {
+                    <li class="page-item @(i == ViewBag.PageActuelle ? "active" : "")">
+                        <a class="page-link"
+                        asp-action="Index"
+                        asp-route-page="@i"
+                        asp-route-recherche="@ViewBag.Recherche"
+                        asp-route-tri="@ViewBag.Tri">
+                            @i
+                        </a>
+                    </li>
+                }
+
+                @if (ViewBag.PageActuelle < ViewBag.NombrePages)
+                {
+                    <li class="page-item">
+                        <a class="page-link"
+                        asp-action="Index"
+                        asp-route-page="@(ViewBag.PageActuelle + 1)"
+                        asp-route-recherche="@ViewBag.Recherche"
+                        asp-route-tri="@ViewBag.Tri">
+                            Suivant
+                        </a>
+                    </li>
+                }
+
+            </ul>
+        </nav>
+    }
 }

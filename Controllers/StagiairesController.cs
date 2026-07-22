@@ -13,32 +13,47 @@ namespace GestionStagiaires.Controllers
             _context = context;
         }
 
-       public IActionResult Index(string? recherche, string? tri)
+      public IActionResult Index(
+    string? recherche,
+    string? tri,
+    int page = 1)
+    {
+        int taillePage = 5;
+
+        var stagiaires = _context.Stagiaires.AsQueryable();
+
+        if (!string.IsNullOrWhiteSpace(recherche))
         {
-            var stagiaires = _context.Stagiaires.AsQueryable();
-
-            if (!string.IsNullOrWhiteSpace(recherche))
-            {
-                stagiaires = stagiaires.Where(s =>
-                    s.Nom!.Contains(recherche) ||
-                    s.Prenom!.Contains(recherche) ||
-                    s.Email!.Contains(recherche));
-            }
-
-            stagiaires = tri switch
-            {
-                "nom" => stagiaires.OrderBy(s => s.Nom),
-                "prenom" => stagiaires.OrderBy(s => s.Prenom),
-                "email" => stagiaires.OrderBy(s => s.Email),
-                "id_desc" => stagiaires.OrderByDescending(s => s.Id),
-                _ => stagiaires.OrderBy(s => s.Id)
-            };
-
-            ViewBag.Recherche = recherche;
-            ViewBag.Tri = tri;
-
-            return View(stagiaires.ToList());
+            stagiaires = stagiaires.Where(s =>
+                s.Nom!.Contains(recherche) ||
+                s.Prenom!.Contains(recherche) ||
+                s.Email!.Contains(recherche));
         }
+
+        stagiaires = tri switch
+        {
+            "nom" => stagiaires.OrderBy(s => s.Nom),
+            "prenom" => stagiaires.OrderBy(s => s.Prenom),
+            "email" => stagiaires.OrderBy(s => s.Email),
+            "id_desc" => stagiaires.OrderByDescending(s => s.Id),
+            _ => stagiaires.OrderBy(s => s.Id)
+        };
+
+        int nombreTotal = stagiaires.Count();
+
+        List<Stagiaire> liste = stagiaires
+            .Skip((page - 1) * taillePage)
+            .Take(taillePage)
+            .ToList();
+
+        ViewBag.Recherche = recherche;
+        ViewBag.Tri = tri;
+        ViewBag.PageActuelle = page;
+        ViewBag.NombrePages =
+            (int)Math.Ceiling(nombreTotal / (double)taillePage);
+
+        return View(liste);
+    }
                 [HttpGet]
                 public IActionResult Create()
         {
