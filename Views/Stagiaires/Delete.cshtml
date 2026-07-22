@@ -1,0 +1,19 @@
+@model GestionStagiaires.Models.Stagiaire
+
+<h2>Supprimer un stagiaire</h2>
+
+<p>Voulez-vous vraiment supprimer ce stagiaire ?</p>
+
+<ul>
+    <li><strong>Nom :</strong> @Model.Nom</li>
+    <li><strong>Prénom :</strong> @Model.Prenom</li>
+    <li><strong>Email :</strong> @Model.Email</li>
+</ul>
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" asp-for="Id" />
+
+    <button type="submit">Supprimer</button>
+
+    <a asp-action="Index">Annuler</a>
+</form>
