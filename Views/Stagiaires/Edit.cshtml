@@ -1,10 +1,12 @@
 @model GestionStagiaires.Models.Stagiaire
 
-<h1>Ajouter un stagiaire</h1>
+<h1>Modifier un stagiaire</h1>
 
 <form asp-controller="Stagiaires"
-      asp-action="Create"
+      asp-action="Edit"
       method="post">
+
+    <input type="hidden" asp-for="Id" />
 
     <div>
         <label asp-for="Nom"></label>
@@ -27,7 +29,7 @@
 
     <br />
 
-    <button type="submit">Ajouter</button>
+    <button type="submit">Enregistrer</button>
 
     <a asp-controller="Stagiaires"
        asp-action="Index">

@@ -11,20 +11,32 @@
 <br />
 
 <table border="1">
-    <tr>
-        <th>Identifiant</th>
-        <th>Nom</th>
-        <th>Prénom</th>
-        <th>Email</th>
-    </tr>
-
-    @foreach (var stagiaire in Model)
-    {
+    <thead>
         <tr>
-            <td>@stagiaire.Id</td>
-            <td>@stagiaire.Nom</td>
-            <td>@stagiaire.Prenom</td>
-            <td>@stagiaire.Email</td>
+            <th>Identifiant</th>
+            <th>Nom</th>
+            <th>Prénom</th>
+            <th>Email</th>
+            <th>Actions</th>
         </tr>
-    }
+    </thead>
+
+    <tbody>
+        @foreach (var stagiaire in Model)
+        {
+            <tr>
+                <td>@stagiaire.Id</td>
+                <td>@stagiaire.Nom</td>
+                <td>@stagiaire.Prenom</td>
+                <td>@stagiaire.Email</td>
+                <td>
+                    <a asp-controller="Stagiaires"
+                       asp-action="Edit"
+                       asp-route-id="@stagiaire.Id">
+                        Modifier
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
 </table>
