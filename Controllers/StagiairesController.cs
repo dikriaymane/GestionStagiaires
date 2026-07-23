@@ -2,18 +2,22 @@ using GestionStagiaires.Models;
 using Microsoft.AspNetCore.Mvc;
 using GestionStagiaires.Data;
 using Microsoft.AspNetCore.Authorization;
-namespace GestionStagiaires.Controllers
-{
+namespace GestionStagiaires.Controllers;
+using GestionStagiaires.ViewModels;
+using Microsoft.AspNetCore.Identity;
+
+
     [Authorize(Roles = "Responsable")]
     public class StagiairesController : Controller
     {
+        private readonly UserManager<IdentityUser> _userManager;
         private readonly ApplicationDbContext _context;
 
-        public StagiairesController(ApplicationDbContext context)
+        public StagiairesController(ApplicationDbContext context,UserManager<IdentityUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
-
       public IActionResult Index(
     string? recherche,
     string? tri,
@@ -56,37 +60,127 @@ namespace GestionStagiaires.Controllers
 
         return View(liste);
     }
-                [HttpGet]
-                public IActionResult Create()
+
+        [HttpGet]
+        public IActionResult Create()
         {
-            return View();
+            return View(new CreateStagiaireViewModel());
         }
 
-       [HttpPost]
-    
-        public IActionResult Create(Stagiaire stagiaire)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(
+            CreateStagiaireViewModel model)
         {
-             if (stagiaire.DateDebut.HasValue &&
-            stagiaire.DateFin.HasValue &&
-            stagiaire.DateFin < stagiaire.DateDebut)
+            if (model.DateDebut.HasValue &&
+                model.DateFin.HasValue &&
+                model.DateFin.Value < model.DateDebut.Value)
             {
                 ModelState.AddModelError(
-                    "DateFin",
+                    nameof(model.DateFin),
                     "La date de fin doit être postérieure à la date de début."
                 );
             }
+
             if (!ModelState.IsValid)
             {
-                return View(stagiaire);
+                return View(model);
             }
 
-            _context.Stagiaires.Add(stagiaire);
-            _context.SaveChanges();
+            var utilisateurExistant =
+                await _userManager.FindByEmailAsync(model.Email!);
 
-            TempData["Succes"] = "Le stagiaire a été ajouté avec succès.";
+            if (utilisateurExistant != null)
+            {
+                ModelState.AddModelError(
+                    nameof(model.Email),
+                    "Un compte existe déjà avec cette adresse email."
+                );
 
-            return RedirectToAction("Index");
+                return View(model);
+            }
+
+            var utilisateur = new IdentityUser
+            {
+                UserName = model.Email,
+                Email = model.Email,
+                EmailConfirmed = true
+            };
+
+            var resultatCreation =
+                await _userManager.CreateAsync(
+                    utilisateur,
+                    model.MotDePasse!
+                );
+
+            if (!resultatCreation.Succeeded)
+            {
+                foreach (var erreur in resultatCreation.Errors)
+                {
+                    ModelState.AddModelError(
+                        nameof(model.MotDePasse),
+                        erreur.Description
+                    );
+                }
+
+                return View(model);
+            }
+
+            var resultatRole =
+                await _userManager.AddToRoleAsync(
+                    utilisateur,
+                    "Stagiaire"
+                );
+
+            if (!resultatRole.Succeeded)
+            {
+                await _userManager.DeleteAsync(utilisateur);
+
+                foreach (var erreur in resultatRole.Errors)
+                {
+                    ModelState.AddModelError(
+                        string.Empty,
+                        erreur.Description
+                    );
+                }
+
+                return View(model);
+            }
+
+            var stagiaire = new Stagiaire
+            {
+                Nom = model.Nom,
+                Prenom = model.Prenom,
+                Email = model.Email,
+                Tuteur = model.Tuteur,
+                DateDebut = model.DateDebut,
+                DateFin = model.DateFin,
+                UserId = utilisateur.Id
+            };
+
+            try
+            {
+                _context.Stagiaires.Add(stagiaire);
+                await _context.SaveChangesAsync();
+            }
+            catch
+            {
+                await _userManager.DeleteAsync(utilisateur);
+
+                ModelState.AddModelError(
+                    string.Empty,
+                    "Une erreur est survenue pendant l’enregistrement du stagiaire."
+                );
+
+                return View(model);
+            }
+
+            TempData["Succes"] =
+                "Le stagiaire et son compte ont été créés avec succès.";
+
+            return RedirectToAction(nameof(Index));
         }
+
         [HttpGet]
         public IActionResult Edit(int id)
         {
@@ -166,4 +260,4 @@ namespace GestionStagiaires.Controllers
             return View(stagiaire);
         }
     }
-}
+

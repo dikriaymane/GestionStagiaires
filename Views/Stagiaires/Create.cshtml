@@ -1,69 +1,139 @@
-@model GestionStagiaires.Models.Stagiaire
+@model GestionStagiaires.ViewModels.CreateStagiaireViewModel
 
-<h1 class="mb-4">Ajouter un stagiaire</h1>
+@{
+    ViewData["Title"] = "Ajouter un stagiaire";
+}
 
-<form asp-action="Create" method="post">
-
-    <div asp-validation-summary="ModelOnly"
-         class="text-danger">
+<div class="card border-0 shadow-sm">
+    <div class="card-header onee-form-header text-white">
+        <h3 class="mb-0">
+            <i class="bi bi-person-plus-fill me-2"></i>
+            Ajouter un stagiaire
+        </h3>
     </div>
 
-    <div class="mb-3">
-        <label asp-for="Nom" class="form-label"></label>
-        <input asp-for="Nom" class="form-control" />
-        <span asp-validation-for="Nom"
-              class="text-danger">
-        </span>
-    </div>
+    <div class="card-body p-4">
+        <form asp-action="Create" method="post">
 
-    <div class="mb-3">
-        <label asp-for="Prenom" class="form-label"></label>
-        <input asp-for="Prenom" class="form-control" />
-        <span asp-validation-for="Prenom"
-              class="text-danger">
-        </span>
-    </div>
+            <div asp-validation-summary="ModelOnly"
+                 class="alert alert-danger">
+            </div>
 
-    <div class="mb-3">
-        <label asp-for="Email" class="form-label"></label>
-        <input asp-for="Email" class="form-control" />
-        <span asp-validation-for="Email"
-              class="text-danger">
-        </span>
-    </div>
+            <h5 class="mb-3">Informations personnelles</h5>
 
-    <div class="mb-3">
-    <label asp-for="Tuteur" class="form-label"></label>
-    <input asp-for="Tuteur" class="form-control" />
-    <span asp-validation-for="Tuteur"
-          class="text-danger">
-    </span>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Nom" class="form-label"></label>
+                    <input asp-for="Nom" class="form-control" />
+                    <span asp-validation-for="Nom"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Prenom" class="form-label"></label>
+                    <input asp-for="Prenom" class="form-control" />
+                    <span asp-validation-for="Prenom"
+                          class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Email" class="form-label"></label>
+                <input asp-for="Email"
+                       class="form-control"
+                       autocomplete="off" />
+                <span asp-validation-for="Email"
+                      class="text-danger"></span>
+            </div>
+
+            <hr class="my-4" />
+
+            <h5 class="mb-3">Informations du stage</h5>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Service" class="form-label"></label>
+                    <input asp-for="Service" class="form-control" />
+                    <span asp-validation-for="Service"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Tuteur" class="form-label"></label>
+                    <input asp-for="Tuteur" class="form-control" />
+                    <span asp-validation-for="Tuteur"
+                          class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="DateDebut"
+                           class="form-label"></label>
+                    <input asp-for="DateDebut"
+                           type="date"
+                           class="form-control" />
+                    <span asp-validation-for="DateDebut"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label asp-for="DateFin"
+                           class="form-label"></label>
+                    <input asp-for="DateFin"
+                           type="date"
+                           class="form-control" />
+                    <span asp-validation-for="DateFin"
+                          class="text-danger"></span>
+                </div>
+            </div>
+
+            <hr class="my-4" />
+
+            <h5 class="mb-3">Compte de connexion</h5>
+
+            <div class="alert alert-info">
+                Le stagiaire utilisera son adresse email et ce mot de passe
+                temporaire pour se connecter.
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="MotDePasse"
+                           class="form-label"></label>
+                    <input asp-for="MotDePasse"
+                           class="form-control"
+                           autocomplete="new-password" />
+                    <span asp-validation-for="MotDePasse"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label asp-for="ConfirmationMotDePasse"
+                           class="form-label"></label>
+                    <input asp-for="ConfirmationMotDePasse"
+                           class="form-control"
+                           autocomplete="new-password" />
+                    <span asp-validation-for="ConfirmationMotDePasse"
+                          class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="d-flex gap-2 mt-3">
+                <button type="submit"
+                        class="btn btn-success">
+                    <i class="bi bi-check-circle-fill me-1"></i>
+                    Créer le stagiaire
+                </button>
+
+                <a asp-action="Index"
+                   class="btn btn-secondary">
+                    Annuler
+                </a>
+            </div>
+        </form>
+    </div>
 </div>
-
-    <div class="mb-3">
-    <label asp-for="DateDebut" class="form-label"></label>
-    <input asp-for="DateDebut" class="form-control" />
-    <span asp-validation-for="DateDebut"
-          class="text-danger">
-    </span>
-
-    </div>
-    <div class="mb-3">
-        <label asp-for="DateFin" class="form-label"></label>
-        <input asp-for="DateFin" class="form-control" />
-        <span asp-validation-for="DateFin"
-            class="text-danger">
-        </span>
-    </div>
-
-    <button type="submit" class="btn btn-success">
-        Ajouter
-    </button>
-
-    <a asp-action="Index" class="btn btn-secondary">
-        Annuler
-    </a>
-</form>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

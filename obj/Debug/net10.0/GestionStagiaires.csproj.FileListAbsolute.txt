@@ -317,4 +317,4 @@ C:\Users\user\Documents\ProjetStage\GestionStagiaires\bin\Debug\net10.0\runtimes
 C:\Users\user\Documents\ProjetStage\GestionStagiaires\bin\Debug\net10.0\runtimes\win-arm64\native\Microsoft.Data.SqlClient.SNI.dll
 C:\Users\user\Documents\ProjetStage\GestionStagiaires\bin\Debug\net10.0\runtimes\win-x64\native\Microsoft.Data.SqlClient.SNI.dll
 C:\Users\user\Documents\ProjetStage\GestionStagiaires\bin\Debug\net10.0\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll
-C:\Users\user\Documents\ProjetStage\GestionStagiaires\obj\Debug\net10.0\compressed\01h7v46l8f-{0}-0a1de42v08-0a1de42v08.gz
+C:\Users\user\Documents\ProjetStage\GestionStagiaires\obj\Debug\net10.0\compressed\01h7v46l8f-{0}-zlfy1xu6cv-zlfy1xu6cv.gz

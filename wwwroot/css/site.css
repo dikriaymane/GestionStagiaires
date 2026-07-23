@@ -137,3 +137,6 @@ body {
 .navbar-brand {
     font-size: 1.1rem;
 }
+.onee-form-header {
+    background-color: var(--onee-dark-blue);
+}
