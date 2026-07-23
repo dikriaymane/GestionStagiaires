@@ -128,3 +128,12 @@ body {
 .onee-navbar .nav-link:hover {
     color: white !important;
 }
+
+.onee-logo {
+    height: 48px;
+    width: auto;
+}
+
+.navbar-brand {
+    font-size: 1.1rem;
+}

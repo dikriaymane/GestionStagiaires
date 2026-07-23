@@ -15,7 +15,22 @@
     <header>
         <nav class="navbar navbar-expand-lg navbar-dark onee-navbar shadow-sm mb-4">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-controller="Home" asp-action="Index"> <i class="bi bi-lightning-charge-fill me-1"></i> ONEE | Gestion des stagiaires</a>
+                <a class="navbar-brand d-flex align-items-center"
+                    asp-controller="Home"
+                    asp-action="Index">
+
+                        <img src="~/image/onee-logo.png"
+                            alt="ONEE"
+                            class="onee-logo me-2" />
+
+                        <div>
+                            <div class="fw-bold">ONEE</div>
+                            <small class="text-white-50">
+                                Gestion des stagiaires
+                            </small>
+                        </div>
+
+                    </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
