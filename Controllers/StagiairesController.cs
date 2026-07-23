@@ -28,7 +28,8 @@ namespace GestionStagiaires.Controllers
             stagiaires = stagiaires.Where(s =>
                 s.Nom!.Contains(recherche) ||
                 s.Prenom!.Contains(recherche) ||
-                s.Email!.Contains(recherche));
+                s.Email!.Contains(recherche)||
+                s.Tuteur!.Contains(recherche));
         }
 
         stagiaires = tri switch
@@ -65,6 +66,15 @@ namespace GestionStagiaires.Controllers
     
         public IActionResult Create(Stagiaire stagiaire)
         {
+             if (stagiaire.DateDebut.HasValue &&
+            stagiaire.DateFin.HasValue &&
+            stagiaire.DateFin < stagiaire.DateDebut)
+            {
+                ModelState.AddModelError(
+                    "DateFin",
+                    "La date de fin doit être postérieure à la date de début."
+                );
+            }
             if (!ModelState.IsValid)
             {
                 return View(stagiaire);
@@ -93,6 +103,15 @@ namespace GestionStagiaires.Controllers
         [HttpPost]
         public IActionResult Edit(Stagiaire stagiaire)
         {
+            if (stagiaire.DateDebut.HasValue &&
+            stagiaire.DateFin.HasValue &&
+            stagiaire.DateFin < stagiaire.DateDebut)
+            {
+                ModelState.AddModelError(
+                    "DateFin",
+                    "La date de fin doit être postérieure à la date de début."
+                );
+            }
             if (!ModelState.IsValid)
             {
                 return View(stagiaire);

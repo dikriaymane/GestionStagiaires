@@ -28,5 +28,19 @@ namespace GestionStagiaires.Models
         [Required(ErrorMessage = "Le nom du tuteur est obligatoire")]
         [Display(Name = "Tuteur")]
         public string? Tuteur { get; set; }
+
+        public IEnumerable<ValidationResult> Validate(
+            ValidationContext validationContext)
+        {
+            if (DateDebut.HasValue &&
+                DateFin.HasValue &&
+                DateFin.Value < DateDebut.Value)
+            {
+                yield return new ValidationResult(
+                    "La date de fin doit être postérieure à la date de début.",
+                    new[] { nameof(DateFin) }
+                );
+            }
+        }
     }
 }
