@@ -4,7 +4,7 @@ using GestionStagiaires.Data;
 using Microsoft.AspNetCore.Authorization;
 namespace GestionStagiaires.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Responsable")]
     public class StagiairesController : Controller
     {
         private readonly ApplicationDbContext _context;

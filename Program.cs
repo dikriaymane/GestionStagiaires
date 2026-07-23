@@ -11,6 +11,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
 
@@ -43,4 +44,36 @@ app.MapControllerRoute(
 app.MapRazorPages()
    .WithStaticAssets();
 
+using (var scope = app.Services.CreateScope())
+{
+    var roleManager =
+        scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
+    var userManager =
+        scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+
+    string[] roles = { "Responsable", "Stagiaire" };
+
+    foreach (string role in roles)
+    {
+        if (!await roleManager.RoleExistsAsync(role))
+        {
+            await roleManager.CreateAsync(new IdentityRole(role));
+        }
+    }
+
+    string emailResponsable = "aymanedikriwac@gmail.com";
+
+    var responsable =
+        await userManager.FindByEmailAsync(emailResponsable);
+
+    if (responsable != null &&
+        !await userManager.IsInRoleAsync(responsable, "Responsable"))
+    {
+        await userManager.AddToRoleAsync(
+            responsable,
+            "Responsable"
+        );
+    }
+}
 app.Run();
