@@ -37,19 +37,40 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
+
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark"
-                            asp-controller="Stagiaires"
+                            <a class="nav-link"
+                            asp-controller="Home"
                             asp-action="Index">
-                                Stagiaires
+                                <i class="bi bi-house-door-fill me-1"></i>
+                                Accueil
                             </a>
                         </li>
+
+                        @if (User.IsInRole("Responsable"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link"
+                                asp-controller="Stagiaires"
+                                asp-action="Index">
+                                    <i class="bi bi-people-fill me-1"></i>
+                                    Stagiaires
+                                </a>
+                            </li>
+                        }
+
+                        @if (User.IsInRole("Stagiaire"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link"
+                                asp-controller="EspaceStagiaire"
+                                asp-action="Index">
+                                    <i class="bi bi-person-circle me-1"></i>
+                                    Mon espace
+                                </a>
+                            </li>
+                        }
+
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>

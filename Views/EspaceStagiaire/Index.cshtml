@@ -1,0 +1,125 @@
+@model GestionStagiaires.Models.Stagiaire
+
+@{
+    ViewData["Title"] = "Mon espace";
+}
+
+<div class="mb-4">
+    <h1 class="fw-bold">
+        <i class="bi bi-person-circle me-2"></i>
+        Mon espace stagiaire
+    </h1>
+
+    <p class="text-muted">
+        Consultez les informations relatives à votre stage.
+    </p>
+</div>
+
+<div class="row g-4">
+
+    <div class="col-lg-8">
+        <div class="card border-0 shadow-sm h-100">
+
+            <div class="card-header onee-form-header text-white">
+                <h4 class="mb-0">
+                    <i class="bi bi-briefcase-fill me-2"></i>
+                    Informations du stage
+                </h4>
+            </div>
+
+            <div class="card-body p-4">
+
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <small class="text-muted">Nom complet</small>
+
+                        <p class="fw-semibold fs-5 mb-0">
+                            @Model.Prenom @Model.Nom
+                        </p>
+                    </div>
+
+                    <div class="col-md-6 mt-3 mt-md-0">
+                        <small class="text-muted">Adresse email</small>
+
+                        <p class="fw-semibold fs-5 mb-0">
+                            @Model.Email
+                        </p>
+                    </div>
+                </div>
+
+                <hr />
+
+                    <div class="col-md-6 mt-3 mt-md-0">
+                        <small class="text-muted">Tuteur</small>
+
+                        <p class="fw-semibold fs-5 mb-0">
+                            @(Model.Tuteur ?? "Non renseigné")
+                        </p>
+                    </div>
+                </div>
+
+                <hr />
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <small class="text-muted">Date de début</small>
+
+                        <p class="fw-semibold fs-5 mb-0">
+                            @(Model.DateDebut?.ToString("dd/MM/yyyy")
+                                ?? "Non définie")
+                        </p>
+                    </div>
+
+                    <div class="col-md-6 mt-3 mt-md-0">
+                        <small class="text-muted">Date de fin</small>
+
+                        <p class="fw-semibold fs-5 mb-0">
+                            @(Model.DateFin?.ToString("dd/MM/yyyy")
+                                ?? "Non définie")
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <div class="card border-0 shadow-sm mb-4">
+
+            <div class="card-body p-4">
+                <div class="onee-icon-box mb-3">
+                    <i class="bi bi-person-badge-fill"></i>
+                </div>
+
+                <h4>Votre encadrant</h4>
+
+                <p class="text-muted">
+                    Pour toute question concernant votre stage,
+                    contactez votre tuteur.
+                </p>
+
+                <div class="alert alert-light border mb-0">
+                    <strong>@(Model.Tuteur ?? "Non renseigné")</strong>
+                </div>
+            </div>
+        </div>
+
+        <div class="card border-0 shadow-sm">
+            <div class="card-body p-4">
+
+                <div class="onee-icon-box mb-3">
+                    <i class="bi bi-file-earmark-text-fill"></i>
+                </div>
+
+                <h4>Documents</h4>
+
+                <p class="text-muted mb-0">
+                    La demande de documents sera disponible prochainement.
+                </p>
+
+            </div>
+        </div>
+    </div>
+
+</div>
