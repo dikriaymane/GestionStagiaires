@@ -1,8 +1,156 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Accueil";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<section class="onee-hero rounded-4 shadow-sm mb-5">
+    <div class="container py-5">
+        <div class="row align-items-center">
+
+            <div class="col-lg-7">
+                <span class="badge bg-light text-primary mb-3 px-3 py-2">
+                    Application interne ONEE
+                </span>
+
+                <h1 class="display-4 fw-bold mb-3">
+                    Gestion des stagiaires
+                </h1>
+
+                <p class="lead mb-4">
+                    Une application permettant de gérer les stagiaires,
+                    leurs périodes de stage, leurs services d’affectation
+                    ainsi que leurs tuteurs.
+                </p>
+
+                <div class="d-flex flex-wrap gap-2">
+                    <a asp-controller="Stagiaires"
+                       asp-action="Index"
+                       class="btn btn-light btn-lg">
+                        <i class="bi bi-people-fill me-2"></i>
+                        Voir les stagiaires
+                    </a>
+
+                    <a asp-controller="Stagiaires"
+                       asp-action="Create"
+                       class="btn btn-onee-green btn-lg">
+                        <i class="bi bi-person-plus-fill me-2"></i>
+                        Ajouter un stagiaire
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-lg-5 text-center mt-4 mt-lg-0">
+                <div class="onee-hero-icon">
+                    <i class="bi bi-building"></i>
+                </div>
+
+                <h2 class="fw-bold mt-3">ONEE</h2>
+
+                <p class="mb-0">
+                    Office National de l’Électricité et de l’Eau Potable
+                </p>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<section class="mb-5">
+    <div class="text-center mb-4">
+        <h2 class="fw-bold">Fonctionnalités principales</h2>
+
+        <p class="text-muted">
+            Les outils essentiels pour faciliter le suivi des stagiaires.
+        </p>
+    </div>
+
+    <div class="row g-4">
+
+        <div class="col-md-4">
+            <div class="card onee-feature-card h-100 border-0 shadow-sm">
+                <div class="card-body p-4">
+
+                    <div class="onee-icon-box mb-3">
+                        <i class="bi bi-people-fill"></i>
+                    </div>
+
+                    <h4 class="card-title">
+                        Gestion des stagiaires
+                    </h4>
+
+                    <p class="card-text text-muted mb-0">
+                        Ajouter, consulter, modifier et supprimer les
+                        informations des stagiaires.
+                    </p>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card onee-feature-card h-100 border-0 shadow-sm">
+                <div class="card-body p-4">
+
+                    <div class="onee-icon-box mb-3">
+                        <i class="bi bi-calendar-check-fill"></i>
+                    </div>
+
+                    <h4 class="card-title">
+                        Suivi des stages
+                    </h4>
+
+                    <p class="card-text text-muted mb-0">
+                        Suivre les dates de début et de fin de chaque
+                        période de stage.
+                    </p>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card onee-feature-card h-100 border-0 shadow-sm">
+                <div class="card-body p-4">
+
+                    <div class="onee-icon-box mb-3">
+                        <i class="bi bi-person-badge-fill"></i>
+                    </div>
+
+                    <h4 class="card-title">
+                        Services et tuteurs
+                    </h4>
+
+                    <p class="card-text text-muted mb-0">
+                        Associer chaque stagiaire à son service
+                        d’affectation et à son tuteur.
+                    </p>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<section class="onee-about rounded-4 p-4 p-md-5 mb-5">
+    <div class="row align-items-center">
+
+        <div class="col-md-8">
+            <h2 class="fw-bold">
+                À propos de l’application
+            </h2>
+
+            <p class="mb-0 text-muted">
+                Cette application a été développée dans le cadre d’un
+                stage à l’ONEE. Elle centralise les principales informations
+                relatives aux stagiaires et facilite leur consultation
+                ainsi que leur mise à jour.
+            </p>
+        </div>
+
+        <div class="col-md-4 text-center mt-4 mt-md-0">
+            <i class="bi bi-droplet-half onee-about-icon"></i>
+            <i class="bi bi-lightning-charge-fill onee-about-icon"></i>
+        </div>
+
+    </div>
+</section>

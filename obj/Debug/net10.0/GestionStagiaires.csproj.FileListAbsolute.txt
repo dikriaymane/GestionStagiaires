@@ -204,7 +204,6 @@ C:\Users\user\Documents\ProjetStage\GestionStagiaires\obj\Debug\net10.0\compress
 C:\Users\user\Documents\ProjetStage\GestionStagiaires\obj\Debug\net10.0\compressed\nezrqnk58p-{0}-muycvpuwrr-muycvpuwrr.gz
 C:\Users\user\Documents\ProjetStage\GestionStagiaires\obj\Debug\net10.0\compressed\v0zgfp0y55-{0}-87fc7y1x7t-87fc7y1x7t.gz
 C:\Users\user\Documents\ProjetStage\GestionStagiaires\obj\Debug\net10.0\compressed\yfc7ypekbg-{0}-mlv21k5csn-mlv21k5csn.gz
-C:\Users\user\Documents\ProjetStage\GestionStagiaires\obj\Debug\net10.0\compressed\01h7v46l8f-{0}-b9sayid5wm-b9sayid5wm.gz
 C:\Users\user\Documents\ProjetStage\GestionStagiaires\obj\Debug\net10.0\compressed\ma6n238nxg-{0}-61n19gt1b8-61n19gt1b8.gz
 C:\Users\user\Documents\ProjetStage\GestionStagiaires\obj\Debug\net10.0\compressed\e7bqjv0p3s-{0}-xtxxf3hu2r-xtxxf3hu2r.gz
 C:\Users\user\Documents\ProjetStage\GestionStagiaires\obj\Debug\net10.0\compressed\ldkg4hpnx8-{0}-bqjiyaj88i-bqjiyaj88i.gz
@@ -318,3 +317,4 @@ C:\Users\user\Documents\ProjetStage\GestionStagiaires\bin\Debug\net10.0\runtimes
 C:\Users\user\Documents\ProjetStage\GestionStagiaires\bin\Debug\net10.0\runtimes\win-arm64\native\Microsoft.Data.SqlClient.SNI.dll
 C:\Users\user\Documents\ProjetStage\GestionStagiaires\bin\Debug\net10.0\runtimes\win-x64\native\Microsoft.Data.SqlClient.SNI.dll
 C:\Users\user\Documents\ProjetStage\GestionStagiaires\bin\Debug\net10.0\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll
+C:\Users\user\Documents\ProjetStage\GestionStagiaires\obj\Debug\net10.0\compressed\01h7v46l8f-{0}-jym8huyvvu-jym8huyvvu.gz

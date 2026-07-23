@@ -29,3 +29,102 @@ body {
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
   text-align: start;
 }
+
+:root {
+    --onee-blue: #0069a8;
+    --onee-dark-blue: #004d7a;
+    --onee-light-blue: #eaf6fc;
+    --onee-green: #70ad47;
+    --onee-dark-green: #568c35;
+}
+
+body {
+    background-color: #f7f9fb;
+}
+
+.onee-hero {
+    color: white;
+    background: linear-gradient(
+        135deg,
+        var(--onee-dark-blue),
+        var(--onee-blue)
+    );
+    overflow: hidden;
+}
+
+.onee-hero-icon {
+    width: 130px;
+    height: 130px;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 4rem;
+    color: var(--onee-blue);
+    background-color: white;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+}
+
+.btn-onee-green {
+    color: white;
+    background-color: var(--onee-green);
+    border-color: var(--onee-green);
+}
+
+.btn-onee-green:hover {
+    color: white;
+    background-color: var(--onee-dark-green);
+    border-color: var(--onee-dark-green);
+}
+
+.onee-feature-card {
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.onee-feature-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.12) !important;
+}
+
+.onee-icon-box {
+    width: 55px;
+    height: 55px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    font-size: 1.7rem;
+    color: white;
+    background-color: var(--onee-blue);
+}
+
+.onee-about {
+    background-color: var(--onee-light-blue);
+    border-left: 6px solid var(--onee-blue);
+}
+
+.onee-about-icon {
+    margin: 0 8px;
+    font-size: 3rem;
+    color: var(--onee-blue);
+}
+
+.onee-navbar {
+    background-color: var(--onee-dark-blue);
+}
+
+.onee-navbar .navbar-brand {
+    color: white;
+    font-weight: 700;
+}
+
+.onee-navbar .nav-link {
+    color: rgba(255, 255, 255, 0.85) !important;
+}
+
+.onee-navbar .nav-link:hover {
+    color: white !important;
+}
