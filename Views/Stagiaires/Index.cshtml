@@ -88,6 +88,8 @@ else
                 <th>Prénom</th>
                 <th>Email</th>
                 <th>Actions</th>
+                <th>Date de début</th>
+                <th>Date de fin</th>
             </tr>
         </thead>
 
@@ -99,6 +101,14 @@ else
                     <td>@stagiaire.Nom</td>
                     <td>@stagiaire.Prenom</td>
                     <td>@stagiaire.Email</td>
+                    <td>
+                        @(stagiaire.DateDebut?.ToString("dd/MM/yyyy") ?? "Non définie")
+                    </td>
+
+                    <td>
+                        @(stagiaire.DateFin?.ToString("dd/MM/yyyy") ?? "Non définie")
+                    </td>
+                 
                     <td>
                     <a asp-action="Details"
                     asp-route-id="@stagiaire.Id"

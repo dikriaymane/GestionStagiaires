@@ -40,3 +40,13 @@
         Retour à la liste
     </a>
 </div>
+
+<p>
+    <strong>Date de début :</strong>
+    @(Model.DateDebut?.ToString("dd/MM/yyyy") ?? "Non définie")
+</p>
+
+<p>
+    <strong>Date de fin :</strong>
+    @(Model.DateFin?.ToString("dd/MM/yyyy") ?? "Non définie")
+</p>

@@ -15,5 +15,13 @@ namespace GestionStagiaires.Models
         [Required(ErrorMessage = "L'email est obligatoire")]
         [EmailAddress(ErrorMessage = "L'adresse email n'est pas valide")]
         public string? Email { get; set; }
+
+        [DataType(DataType.Date)]
+        [Display(Name = "Date de début")]
+        public DateTime? DateDebut { get; set; }
+
+        [DataType(DataType.Date)]
+        [Display(Name = "Date de fin")]
+        public DateTime? DateFin { get; set; }
     }
 }

@@ -34,6 +34,22 @@
         </span>
     </div>
 
+    <div class="mb-3">
+    <label asp-for="DateDebut" class="form-label"></label>
+    <input asp-for="DateDebut" class="form-control" />
+    <span asp-validation-for="DateDebut"
+          class="text-danger">
+    </span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="DateFin" class="form-label"></label>
+        <input asp-for="DateFin" class="form-control" />
+        <span asp-validation-for="DateFin"
+            class="text-danger">
+        </span>
+    </div>
+
     <button type="submit" class="btn btn-warning">
         Enregistrer
     </button>
