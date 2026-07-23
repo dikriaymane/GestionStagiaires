@@ -3,133 +3,187 @@
 }
 
 <section class="onee-hero rounded-4 shadow-sm mb-5">
-    <div class="container py-5">
-        <div class="row align-items-center">
+    <div class="container-fluid px-4 px-lg-5 py-5">
+
+        <div class="row align-items-center g-5">
 
             <div class="col-lg-7">
+
                 <span class="badge bg-light text-primary mb-3 px-3 py-2">
                     Application interne ONEE
                 </span>
 
-                <h1 class="display-4 fw-bold mb-3">
-                    Gestion des stagiaires
-                </h1>
+                @if (User.Identity?.IsAuthenticated == true &&
+                     User.IsInRole("Responsable"))
+                {
+                    <h1 class="display-4 fw-bold mb-3">
+                        Gestion des stagiaires
+                    </h1>
 
-                <p class="lead mb-4">
-                    Une application permettant de gérer les stagiaires,
-                    leurs périodes de stage, leurs services d’affectation
-                    ainsi que leurs tuteurs.
-                </p>
+                    <p class="lead mb-4">
+                        Gérez les stagiaires, leurs périodes de stage,
+                        leurs services d’affectation et leurs tuteurs.
+                    </p>
 
-                <div class="d-flex flex-wrap gap-2">
-                    <a asp-controller="Stagiaires"
+                    <div class="d-flex flex-wrap gap-2">
+                        <a asp-controller="Stagiaires"
+                           asp-action="Index"
+                           class="btn btn-light btn-lg">
+                            <i class="bi bi-people-fill me-2"></i>
+                            Voir les stagiaires
+                        </a>
+
+                        <a asp-controller="Stagiaires"
+                           asp-action="Create"
+                           class="btn btn-onee-green btn-lg">
+                            <i class="bi bi-person-plus-fill me-2"></i>
+                            Ajouter un stagiaire
+                        </a>
+                    </div>
+                }
+                else if (User.Identity?.IsAuthenticated == true &&
+                         User.IsInRole("Stagiaire"))
+                {
+                    <h1 class="display-4 fw-bold mb-3">
+                        Bienvenue dans votre espace
+                    </h1>
+
+                    <p class="lead mb-4">
+                        Consultez les informations de votre stage,
+                        votre service et les coordonnées de votre encadrant.
+                    </p>
+
+                    <a asp-controller="EspaceStagiaire"
                        asp-action="Index"
                        class="btn btn-light btn-lg">
-                        <i class="bi bi-people-fill me-2"></i>
-                        Voir les stagiaires
+                        <i class="bi bi-person-circle me-2"></i>
+                        Accéder à mon espace
                     </a>
+                }
+                else
+                {
+                    <h1 class="display-4 fw-bold mb-3">
+                        Portail des stages ONEE
+                    </h1>
 
-                    <a asp-controller="Stagiaires"
-                       asp-action="Create"
-                       class="btn btn-onee-green btn-lg">
-                        <i class="bi bi-person-plus-fill me-2"></i>
-                        Ajouter un stagiaire
+                    <p class="lead mb-4">
+                        Plateforme interne dédiée au suivi des stages.
+                        Connectez-vous pour accéder à votre espace.
+                    </p>
+
+                    <a asp-area="Identity"
+                       asp-page="/Account/Login"
+                       class="btn btn-light btn-lg">
+                        <i class="bi bi-box-arrow-in-right me-2"></i>
+                        Se connecter
                     </a>
-                </div>
+                }
+
             </div>
 
-            <div class="col-lg-5 text-center mt-4 mt-lg-0">
-                <div class="onee-hero-icon">
-                    <i class="bi bi-building"></i>
+            <div class="col-lg-5">
+                <div class="onee-identity-panel text-center">
+
+                    <div class="onee-logo-circle mx-auto">
+                        <img src="~/image/onee-logo.png"
+                             asp-append-version="true"
+                             alt="Logo ONEE"
+                             class="onee-hero-logo" />
+                    </div>
+
+                    <h2 class="fw-bold mt-4 mb-2">
+                        ONEE
+                    </h2>
+
+                    <p class="mb-0">
+                        Office National de l’Électricité et de l’Eau Potable
+                    </p>
+
                 </div>
-
-                <h2 class="fw-bold mt-3">ONEE</h2>
-
-                <p class="mb-0">
-                    Office National de l’Électricité et de l’Eau Potable
-                </p>
             </div>
 
         </div>
     </div>
 </section>
+@if (User.Identity?.IsAuthenticated == true)
+{
+    <section class="mb-5">
+        <div class="text-center mb-4">
+            <h2 class="fw-bold">Fonctionnalités principales</h2>
 
-<section class="mb-5">
-    <div class="text-center mb-4">
-        <h2 class="fw-bold">Fonctionnalités principales</h2>
-
-        <p class="text-muted">
-            Les outils essentiels pour faciliter le suivi des stagiaires.
-        </p>
-    </div>
-
-    <div class="row g-4">
-
-        <div class="col-md-4">
-            <div class="card onee-feature-card h-100 border-0 shadow-sm">
-                <div class="card-body p-4">
-
-                    <div class="onee-icon-box mb-3">
-                        <i class="bi bi-people-fill"></i>
-                    </div>
-
-                    <h4 class="card-title">
-                        Gestion des stagiaires
-                    </h4>
-
-                    <p class="card-text text-muted mb-0">
-                        Ajouter, consulter, modifier et supprimer les
-                        informations des stagiaires.
-                    </p>
-
-                </div>
-            </div>
+            <p class="text-muted">
+                Les outils essentiels pour faciliter le suivi des stagiaires.
+            </p>
         </div>
 
-        <div class="col-md-4">
-            <div class="card onee-feature-card h-100 border-0 shadow-sm">
-                <div class="card-body p-4">
+        <div class="row g-4">
 
-                    <div class="onee-icon-box mb-3">
-                        <i class="bi bi-calendar-check-fill"></i>
+            <div class="col-md-4">
+                <div class="card onee-feature-card h-100 border-0 shadow-sm">
+                    <div class="card-body p-4">
+
+                        <div class="onee-icon-box mb-3">
+                            <i class="bi bi-people-fill"></i>
+                        </div>
+
+                        <h4 class="card-title">
+                            Gestion des stagiaires
+                        </h4>
+
+                        <p class="card-text text-muted mb-0">
+                            Ajouter, consulter, modifier et supprimer les
+                            informations des stagiaires.
+                        </p>
+
                     </div>
-
-                    <h4 class="card-title">
-                        Suivi des stages
-                    </h4>
-
-                    <p class="card-text text-muted mb-0">
-                        Suivre les dates de début et de fin de chaque
-                        période de stage.
-                    </p>
-
                 </div>
             </div>
-        </div>
 
-        <div class="col-md-4">
-            <div class="card onee-feature-card h-100 border-0 shadow-sm">
-                <div class="card-body p-4">
+            <div class="col-md-4">
+                <div class="card onee-feature-card h-100 border-0 shadow-sm">
+                    <div class="card-body p-4">
 
-                    <div class="onee-icon-box mb-3">
-                        <i class="bi bi-person-badge-fill"></i>
+                        <div class="onee-icon-box mb-3">
+                            <i class="bi bi-calendar-check-fill"></i>
+                        </div>
+
+                        <h4 class="card-title">
+                            Suivi des stages
+                        </h4>
+
+                        <p class="card-text text-muted mb-0">
+                            Suivre les dates de début et de fin de chaque
+                            période de stage.
+                        </p>
+
                     </div>
-
-                    <h4 class="card-title">
-                        Services et tuteurs
-                    </h4>
-
-                    <p class="card-text text-muted mb-0">
-                        Associer chaque stagiaire à son service
-                        d’affectation et à son tuteur.
-                    </p>
-
                 </div>
             </div>
-        </div>
 
-    </div>
-</section>
+            <div class="col-md-4">
+                <div class="card onee-feature-card h-100 border-0 shadow-sm">
+                    <div class="card-body p-4">
+
+                        <div class="onee-icon-box mb-3">
+                            <i class="bi bi-person-badge-fill"></i>
+                        </div>
+
+                        <h4 class="card-title">
+                            Services et tuteurs
+                        </h4>
+
+                        <p class="card-text text-muted mb-0">
+                            Associer chaque stagiaire à son service
+                            d’affectation et à son tuteur.
+                        </p>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+}
 
 <section class="onee-about rounded-4 p-4 p-md-5 mb-5">
     <div class="row align-items-center">
