@@ -23,5 +23,10 @@ namespace GestionStagiaires.Models
         [DataType(DataType.Date)]
         [Display(Name = "Date de fin")]
         public DateTime? DateFin { get; set; }
+
+
+        [Required(ErrorMessage = "Le nom du tuteur est obligatoire")]
+        [Display(Name = "Tuteur")]
+        public string? Tuteur { get; set; }
     }
 }

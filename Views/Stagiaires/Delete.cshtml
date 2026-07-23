@@ -22,6 +22,21 @@
             <strong>Email :</strong>
             @Model.Email
         </p>
+
+        <p>
+            <strong>Tuteur :</strong>
+            @Model.Tuteur
+        </p>
+
+        <p>
+            <strong>Date de début :</strong>
+            @(Model.DateDebut?.ToString("dd/MM/yyyy") ?? "Non définie")
+        </p>
+
+        <p>
+            <strong>Date de fin :</strong>
+            @(Model.DateFin?.ToString("dd/MM/yyyy") ?? "Non définie")
+        </p>
     </div>
 </div>
 
@@ -38,12 +53,5 @@
     </a>
 </form>
 
-<p>
-    <strong>Date de début :</strong>
-    @(Model.DateDebut?.ToString("dd/MM/yyyy") ?? "Non définie")
-</p>
 
-<p>
-    <strong>Date de fin :</strong>
-    @(Model.DateFin?.ToString("dd/MM/yyyy") ?? "Non définie")
-</p>
+
