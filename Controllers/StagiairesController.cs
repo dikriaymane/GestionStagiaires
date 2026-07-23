@@ -133,5 +133,18 @@ namespace GestionStagiaires.Controllers
 
             return RedirectToAction("Index");
         }
+
+        [HttpGet]
+        public IActionResult Details(int id)
+        {
+            Stagiaire? stagiaire = _context.Stagiaires.Find(id);
+
+            if (stagiaire == null)
+            {
+                return NotFound();
+            }
+
+            return View(stagiaire);
+        }
     }
 }

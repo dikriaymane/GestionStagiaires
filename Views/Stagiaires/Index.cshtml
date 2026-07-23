@@ -100,18 +100,24 @@ else
                     <td>@stagiaire.Prenom</td>
                     <td>@stagiaire.Email</td>
                     <td>
-                        <a asp-action="Edit"
-                           asp-route-id="@stagiaire.Id"
-                           class="btn btn-warning btn-sm">
-                            Modifier
-                        </a>
+                    <a asp-action="Details"
+                    asp-route-id="@stagiaire.Id"
+                    class="btn btn-info btn-sm">
+                        Détails
+                    </a>
 
-                        <a asp-action="Delete"
-                           asp-route-id="@stagiaire.Id"
-                           class="btn btn-danger btn-sm">
-                            Supprimer
-                        </a>
-                    </td>
+                    <a asp-action="Edit"
+                    asp-route-id="@stagiaire.Id"
+                    class="btn btn-warning btn-sm">
+                        Modifier
+                    </a>
+
+                    <a asp-action="Delete"
+                    asp-route-id="@stagiaire.Id"
+                    class="btn btn-danger btn-sm">
+                        Supprimer
+                    </a>
+                </td>
                 </tr>
             }
         </tbody>
