@@ -13,4 +13,15 @@ public class ApplicationDbContext : IdentityDbContext
     }
 
     public DbSet<Stagiaire> Stagiaires { get; set; } = null!;
+
+    protected override void OnModelCreating(ModelBuilder builder)
+    {
+        base.OnModelCreating(builder);
+
+        builder.Entity<Stagiaire>()
+            .HasOne(s => s.User)
+            .WithOne()
+            .HasForeignKey<Stagiaire>(s => s.UserId)
+            .OnDelete(DeleteBehavior.SetNull);
+    }
 }

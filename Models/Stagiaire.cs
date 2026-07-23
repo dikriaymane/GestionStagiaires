@@ -1,10 +1,15 @@
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Identity;
 
 namespace GestionStagiaires.Models
 {
     public class Stagiaire
     {
         public int Id { get; set; }
+
+        public string? UserId { get; set; }
+
+        public IdentityUser? User { get; set; }
 
         [Required(ErrorMessage = "Le nom est obligatoire")]
         public string? Nom { get; set; }
