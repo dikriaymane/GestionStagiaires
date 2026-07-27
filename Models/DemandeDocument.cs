@@ -22,5 +22,11 @@ namespace GestionStagiaires.Models
         public string Statut { get; set; } = "En attente";
 
         public Stagiaire? Stagiaire { get; set; }
+
+        public int? DocumentStagiaireId { get; set; }
+
+        public DocumentStagiaire? DocumentStagiaire { get; set; }
+
+        public DateTime? DateTraitement { get; set; }
     }
 }

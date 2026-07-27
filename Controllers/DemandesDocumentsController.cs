@@ -4,21 +4,25 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using GestionStagiaires.ViewModels;
 
 namespace GestionStagiaires.Controllers
 {
     [Authorize]
     public class DemandesDocumentsController : Controller
     {
+        private readonly IWebHostEnvironment _environment;
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
 
         public DemandesDocumentsController(
             ApplicationDbContext context,
-            UserManager<IdentityUser> userManager)
+            UserManager<IdentityUser> userManager,
+            IWebHostEnvironment environment)
         {
             _context = context;
             _userManager = userManager;
+            _environment = environment;
         }
 
         [Authorize(Roles = "Stagiaire")]
@@ -212,6 +216,171 @@ namespace GestionStagiaires.Controllers
 
             TempData["Succes"] =
                 "La demande a été refusée.";
+
+            return RedirectToAction(nameof(Gestion));
+        }
+        [Authorize(Roles = "Responsable")]
+        [HttpGet]
+        public async Task<IActionResult> Transmettre(int id)
+        {
+            var demande = await _context.DemandesDocuments
+                .Include(d => d.Stagiaire)
+                .FirstOrDefaultAsync(d => d.Id == id);
+
+            if (demande == null)
+            {
+                return NotFound();
+            }
+
+            if (demande.Statut != "En attente")
+            {
+                TempData["Erreur"] = "Cette demande a déjà été traitée.";
+
+                return RedirectToAction(nameof(Gestion));
+            }
+
+            ViewBag.Demande = demande;
+
+            return View(new TraiterDemandeViewModel
+            {
+                DemandeId = demande.Id
+            });
+        }
+        [Authorize(Roles = "Responsable")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Transmettre(
+            TraiterDemandeViewModel model)
+        {
+            var demande = await _context.DemandesDocuments
+                .Include(d => d.Stagiaire)
+                .FirstOrDefaultAsync(d => d.Id == model.DemandeId);
+
+            if (demande == null)
+            {
+                return NotFound();
+            }
+
+            if (demande.Statut != "En attente")
+            {
+                TempData["Erreur"] = "Cette demande a déjà été traitée.";
+
+                return RedirectToAction(nameof(Gestion));
+            }
+
+            ViewBag.Demande = demande;
+
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            if (model.Fichier == null || model.Fichier.Length == 0)
+            {
+                ModelState.AddModelError(
+                    nameof(model.Fichier),
+                    "Veuillez sélectionner un fichier."
+                );
+
+                return View(model);
+            }
+
+            const long tailleMaximale = 5 * 1024 * 1024;
+
+            if (model.Fichier.Length > tailleMaximale)
+            {
+                ModelState.AddModelError(
+                    nameof(model.Fichier),
+                    "Le fichier ne doit pas dépasser 5 Mo."
+                );
+
+                return View(model);
+            }
+
+            string extension =
+                Path.GetExtension(model.Fichier.FileName)
+                    .ToLowerInvariant();
+
+            if (extension != ".pdf")
+            {
+                ModelState.AddModelError(
+                    nameof(model.Fichier),
+                    "Seuls les fichiers PDF sont autorisés."
+                );
+
+                return View(model);
+            }
+
+            string dossierUploads = Path.Combine(
+                _environment.WebRootPath,
+                "uploads",
+                "documents"
+            );
+
+            Directory.CreateDirectory(dossierUploads);
+
+            string nomFichierStocke =
+                $"{Guid.NewGuid()}{extension}";
+
+            string cheminPhysique = Path.Combine(
+                dossierUploads,
+                nomFichierStocke
+            );
+
+            await using (var stream = new FileStream(
+                cheminPhysique,
+                FileMode.Create))
+            {
+                await model.Fichier.CopyToAsync(stream);
+            }
+
+            string? responsableId =
+                _userManager.GetUserId(User);
+
+            var document = new DocumentStagiaire
+            {
+                StagiaireId = demande.StagiaireId,
+                NomDocument = demande.TypeDocument,
+                NomFichier = Path.GetFileName(
+                    model.Fichier.FileName
+                ),
+                CheminFichier =
+                    $"/uploads/documents/{nomFichierStocke}",
+                DateDepot = DateTime.Now,
+                ResponsableId = responsableId
+            };
+
+            _context.DocumentsStagiaires.Add(document);
+
+            await _context.SaveChangesAsync();
+
+            demande.Statut = "Acceptée";
+            demande.DateTraitement = DateTime.Now;
+            demande.DocumentStagiaireId = document.Id;
+
+            if (!string.IsNullOrWhiteSpace(
+                demande.Stagiaire?.UserId))
+            {
+                _context.Notifications.Add(new Notification
+                {
+                    UserId = demande.Stagiaire.UserId,
+                    Titre = "Votre document est disponible",
+                    Message =
+                        $"Votre demande de « {demande.TypeDocument} » " +
+                        "a été traitée. Le document est maintenant disponible.",
+                    DateCreation = DateTime.Now,
+                    EstLue = false,
+                    Lien = Url.Action(
+                        "MesDocuments",
+                        "DocumentsStagiaires"
+                    )
+                });
+            }
+
+            await _context.SaveChangesAsync();
+
+            TempData["Succes"] =
+                "Le document a été transmis au stagiaire.";
 
             return RedirectToAction(nameof(Gestion));
         }
