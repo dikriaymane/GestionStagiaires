@@ -400,5 +400,31 @@ namespace GestionStagiaires.Controllers
 
             return View(demande);
         }
+
+        [Authorize(Roles = "Stagiaire")]
+        public async Task<IActionResult> DetailsStagiaire(int id)
+        {
+            string? userId = _userManager.GetUserId(User);
+
+            if (string.IsNullOrWhiteSpace(userId))
+            {
+                return Challenge();
+            }
+
+            var demande = await _context.DemandesDocuments
+                .Include(d => d.Stagiaire)
+                .Include(d => d.DocumentStagiaire)
+                .FirstOrDefaultAsync(d =>
+                    d.Id == id &&
+                    d.Stagiaire != null &&
+                    d.Stagiaire.UserId == userId);
+
+            if (demande == null)
+            {
+                return NotFound();
+            }
+
+            return View(demande);
+        }
     }
 }

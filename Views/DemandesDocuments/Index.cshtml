@@ -23,95 +23,110 @@
         Nouvelle demande
     </a>
 
+    </div>
+
+    @if (TempData["Succes"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show"
+            role="alert">
+
+            @TempData["Succes"]
+
+            <button type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert">
+            </button>
+
+        </div>
+    }
+
+    @if (Model == null || Model.Count == 0)
+    {
+        <div class="alert alert-info">
+            Vous n’avez encore envoyé aucune demande.
+        </div>
+    }
+    else
+    {
+        <div class="card border-0 shadow-sm">
+
+            <div class="card-body p-0">
+
+                <div class="table-responsive">
+
+                    <div class="card border-0 shadow-sm">
+        <div class="table-responsive">
+
+            <div class="card border-0 shadow-sm">
+    <div class="table-responsive">
+
+        <table class="table table-hover align-middle mb-0">
+
+            <thead class="table-dark">
+                <tr>
+                    <th>Document</th>
+                    <th>Date</th>
+                    <th>Statut</th>
+                    <th class="text-end">Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var demande in Model)
+                {
+                    <tr>
+
+                        <td class="fw-semibold">
+                            @demande.TypeDocument
+                        </td>
+
+                        <td>
+                            @(demande.DateDemande
+                                .ToString("dd/MM/yyyy HH:mm"))
+                        </td>
+
+                        <td>
+                            @if (demande.Statut == "En attente")
+                            {
+                                <span class="badge bg-warning text-dark">
+                                    En attente
+                                </span>
+                            }
+                            else if (demande.Statut == "Traitée" ||
+                                     demande.Statut == "Acceptée")
+                            {
+                                <span class="badge bg-success">
+                                    Traitée
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-danger">
+                                    Refusée
+                                </span>
+                            }
+                        </td>
+
+                        <td class="text-end">
+                            <a asp-action="DetailsStagiaire"
+                               asp-route-id="@demande.Id"
+                               class="btn btn-sm btn-outline-primary">
+
+                                <i class="bi bi-eye-fill me-1"></i>
+                                Voir
+                            </a>
+                        </td>
+
+                    </tr>
+                }
+            </tbody>
+
+        </table>
+
+    </div>
 </div>
-
-@if (TempData["Succes"] != null)
-{
-    <div class="alert alert-success alert-dismissible fade show"
-         role="alert">
-
-        @TempData["Succes"]
-
-        <button type="button"
-                class="btn-close"
-                data-bs-dismiss="alert">
-        </button>
-
+        </div>
     </div>
-}
-
-@if (Model == null || Model.Count == 0)
-{
-    <div class="alert alert-info">
-        Vous n’avez encore envoyé aucune demande.
-    </div>
-}
-else
-{
-    <div class="card border-0 shadow-sm">
-
-        <div class="card-body p-0">
-
-            <div class="table-responsive">
-
-                <table class="table table-hover align-middle mb-0">
-
-                    <thead class="table-dark">
-                        <tr>
-                            <th>Document</th>
-                            <th>Message</th>
-                            <th>Date</th>
-                            <th>Statut</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-
-                        @foreach (var demande in Model)
-                        {
-                            <tr>
-
-                                <td class="fw-semibold">
-                                    @demande.TypeDocument
-                                </td>
-
-                                <td>
-                                    @(string.IsNullOrWhiteSpace(demande.Message)
-                                        ? "Aucun message"
-                                        : demande.Message)
-                                </td>
-
-                                <td>
-                                    @demande.DateDemande.ToString("dd/MM/yyyy HH:mm")
-                                </td>
-
-                                <td>
-                                    @if (demande.Statut == "Acceptée")
-                                    {
-                                        <span class="badge bg-success">
-                                            Acceptée
-                                        </span>
-                                    }
-                                    else if (demande.Statut == "Refusée")
-                                    {
-                                        <span class="badge bg-danger">
-                                            Refusée
-                                        </span>
-                                    }
-                                    else
-                                    {
-                                        <span class="badge bg-warning text-dark">
-                                            En attente
-                                        </span>
-                                    }
-                                </td>
-
-                            </tr>
-                        }
-
-                    </tbody>
-
-                </table>
 
             </div>
         </div>
