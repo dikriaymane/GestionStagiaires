@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GestionStagiaires.Controllers
 {
-    [Authorize(Roles = "Stagiaire")]
+    [Authorize]
     public class DemandesDocumentsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -21,6 +21,7 @@ namespace GestionStagiaires.Controllers
             _userManager = userManager;
         }
 
+        [Authorize(Roles = "Stagiaire")]
         public async Task<IActionResult> Index()
         {
             var utilisateur = await _userManager.GetUserAsync(User);
@@ -46,12 +47,14 @@ namespace GestionStagiaires.Controllers
             return View(demandes);
         }
 
+        [Authorize(Roles = "Stagiaire")]
         [HttpGet]
         public IActionResult Create()
         {
             return View(new DemandeDocument());
         }
 
+        [Authorize(Roles = "Stagiaire")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(DemandeDocument demande)
@@ -90,6 +93,63 @@ namespace GestionStagiaires.Controllers
                 "Votre demande a été envoyée avec succès.";
 
             return RedirectToAction(nameof(Index));
+        }
+
+        [Authorize(Roles = "Responsable")]
+        public async Task<IActionResult> Gestion()
+        {
+            var demandes = await _context.DemandesDocuments
+                .Include(d => d.Stagiaire)
+                .OrderByDescending(d => d.DateDemande)
+                .ToListAsync();
+
+            return View(demandes);
+        }
+
+        [Authorize(Roles = "Responsable")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Accepter(int id)
+        {
+            var demande = await _context.DemandesDocuments
+                .FindAsync(id);
+
+            if (demande == null)
+            {
+                return NotFound();
+            }
+
+            demande.Statut = "Acceptée";
+
+            await _context.SaveChangesAsync();
+
+            TempData["Succes"] =
+                "La demande a été acceptée.";
+
+            return RedirectToAction(nameof(Gestion));
+        }
+
+        [Authorize(Roles = "Responsable")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Refuser(int id)
+        {
+            var demande = await _context.DemandesDocuments
+                .FindAsync(id);
+
+            if (demande == null)
+            {
+                return NotFound();
+            }
+
+            demande.Statut = "Refusée";
+
+            await _context.SaveChangesAsync();
+
+            TempData["Succes"] =
+                "La demande a été refusée.";
+
+            return RedirectToAction(nameof(Gestion));
         }
     }
 }
