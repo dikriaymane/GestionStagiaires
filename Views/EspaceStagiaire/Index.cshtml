@@ -174,9 +174,25 @@
 
                 <h4>Documents</h4>
 
-                <p class="text-muted mb-0">
-                    La demande de documents sera disponible prochainement.
-                </p>
+                    <p class="text-muted">
+                        Demandez une attestation, une convention ou un autre document.
+                    </p>
+
+                    <div class="d-grid gap-2">
+
+                        <a asp-controller="DemandesDocuments"
+                        asp-action="Create"
+                        class="btn btn-success">
+                            <i class="bi bi-file-earmark-plus-fill me-1"></i>
+                            Demander un document
+                        </a>
+
+                        <a asp-controller="DemandesDocuments"
+                        asp-action="Index"
+                        class="btn btn-outline-primary">
+                            <i class="bi bi-clock-history me-1"></i>
+                            Voir mes demandes
+                        </a>
 
             </div>
         </div>

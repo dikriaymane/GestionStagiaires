@@ -35,6 +35,14 @@ build_property.EnableCodeStyleSeverity =
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/user/Documents/ProjetStage/GestionStagiaires/Views/DemandesDocuments/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGVtYW5kZXNEb2N1bWVudHNcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/Documents/ProjetStage/GestionStagiaires/Views/DemandesDocuments/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGVtYW5kZXNEb2N1bWVudHNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/user/Documents/ProjetStage/GestionStagiaires/Views/EspaceStagiaire/AucuneFiche.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRXNwYWNlU3RhZ2lhaXJlXEF1Y3VuZUZpY2hlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
