@@ -5,7 +5,6 @@ namespace GestionStagiaires.Models
     public class Notification
     {
         public int Id { get; set; }
-
         [Required]
         public string UserId { get; set; } = string.Empty;
 
@@ -16,9 +15,7 @@ namespace GestionStagiaires.Models
         public string Message { get; set; } = string.Empty;
 
         public DateTime DateCreation { get; set; } = DateTime.Now;
-
         public bool EstLue { get; set; } = false;
-
         public string? Lien { get; set; }
     }
 }

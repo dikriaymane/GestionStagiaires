@@ -53,7 +53,6 @@ namespace GestionStagiaires.Controllers
         {
             var stagiaire = await _context.Stagiaires
                 .FindAsync(model.StagiaireId);
-
             if (stagiaire == null)
             {
                 return NotFound();

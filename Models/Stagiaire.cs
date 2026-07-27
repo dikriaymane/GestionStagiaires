@@ -6,14 +6,11 @@ namespace GestionStagiaires.Models
     public class Stagiaire
     {
         public int Id { get; set; }
-
         public string? UserId { get; set; }
-
         public IdentityUser? User { get; set; }
 
         [Required(ErrorMessage = "Le nom est obligatoire")]
         public string? Nom { get; set; }
-
         [Required(ErrorMessage = "Le prénom est obligatoire")]
         public string? Prenom { get; set; }
 
@@ -42,17 +39,11 @@ namespace GestionStagiaires.Models
 
         public string? BureauTuteur { get; set; }
 
-        public IEnumerable<ValidationResult> Validate(
-            ValidationContext validationContext)
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            if (DateDebut.HasValue &&
-                DateFin.HasValue &&
-                DateFin.Value < DateDebut.Value)
+            if (DateDebut.HasValue && DateFin.HasValue && DateFin.Value < DateDebut.Value)
             {
-                yield return new ValidationResult(
-                    "La date de fin doit être postérieure à la date de début.",
-                    new[] { nameof(DateFin) }
-                );
+                yield return new ValidationResult("La date de fin doit être postérieure à la date de début.",new[] { nameof(DateFin) });
             }
         }
     }
