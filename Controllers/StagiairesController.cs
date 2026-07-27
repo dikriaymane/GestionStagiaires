@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Authorization;
 namespace GestionStagiaires.Controllers;
 using GestionStagiaires.ViewModels;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+
 
 
     [Authorize(Roles = "Responsable")]
@@ -263,6 +265,35 @@ using Microsoft.AspNetCore.Identity;
             }
 
             return View(stagiaire);
+        }
+        [Authorize(Roles = "Responsable")]
+        public async Task<IActionResult> Dashboard()
+        {
+            DateTime aujourdHui = DateTime.Today;
+
+            var model = new DashboardResponsableViewModel
+            {
+                TotalStagiaires = await _context.Stagiaires.CountAsync(),
+
+                StagesEnCours = await _context.Stagiaires.CountAsync(s =>
+                    s.DateDebut.HasValue &&
+                    s.DateFin.HasValue &&
+                    s.DateDebut.Value <= aujourdHui &&
+                    s.DateFin.Value >= aujourdHui),
+
+                StagesTermines = await _context.Stagiaires.CountAsync(s =>
+                    s.DateFin.HasValue &&
+                    s.DateFin.Value < aujourdHui),
+
+                StagesAVenir = await _context.Stagiaires.CountAsync(s =>
+                    s.DateDebut.HasValue &&
+                    s.DateDebut.Value > aujourdHui),
+
+                DemandesEnAttente = await _context.DemandesDocuments.CountAsync(d =>
+                    d.Statut == "En attente")
+            };
+
+            return View(model);
         }
     }
 

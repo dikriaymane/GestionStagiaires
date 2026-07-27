@@ -248,3 +248,25 @@ body {
 
     border: 2px solid white;
 }
+.dashboard-card {
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1) !important;
+}
+
+.dashboard-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 1.6rem;
+}
