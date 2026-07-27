@@ -41,5 +41,15 @@ namespace GestionStagiaires.ViewModels
         )]
         [Display(Name = "Confirmation du mot de passe")]
         public string? ConfirmationMotDePasse { get; set; }
+
+        [EmailAddress(ErrorMessage = "L’adresse email du tuteur n’est pas valide.")]
+        [Display(Name = "Email du tuteur")]
+        public string? EmailTuteur { get; set; }
+
+        [Display(Name = "Téléphone du tuteur")]
+        public string? TelephoneTuteur { get; set; }
+
+        [Display(Name = "Bureau du tuteur")]
+        public string? BureauTuteur { get; set; }
     }
 }

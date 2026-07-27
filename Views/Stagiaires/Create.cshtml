@@ -58,6 +58,35 @@
                           class="text-danger"></span>
                 </div>
 
+                                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="EmailTuteur" class="form-label"></label>
+                        <input asp-for="EmailTuteur"
+                            class="form-control"
+                            placeholder="exemple@onee.ma" />
+                        <span asp-validation-for="EmailTuteur"
+                            class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="TelephoneTuteur" class="form-label"></label>
+                        <input asp-for="TelephoneTuteur"
+                            class="form-control"
+                            placeholder="Téléphone professionnel" />
+                        <span asp-validation-for="TelephoneTuteur"
+                            class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="BureauTuteur" class="form-label"></label>
+                    <input asp-for="BureauTuteur"
+                        class="form-control"
+                        placeholder="Exemple : Bâtiment A, bureau 12" />
+                    <span asp-validation-for="BureauTuteur"
+                        class="text-danger"></span>
+                </div>
+
                 <div class="col-md-6 mb-3">
                     <label asp-for="Service" class="form-label"></label>
                     <input asp-for="Service" class="form-control" />

@@ -36,6 +36,21 @@
         </p>
 
         <p>
+            <strong>Email du tuteur :</strong>
+            @(Model.EmailTuteur ?? "Non renseigné")
+        </p>
+
+        <p>
+            <strong>Téléphone du tuteur :</strong>
+            @(Model.TelephoneTuteur ?? "Non renseigné")
+        </p>
+
+        <p>
+            <strong>Bureau :</strong>
+            @(Model.BureauTuteur ?? "Non renseigné")
+        </p>
+
+        <p>
             <strong>Date de début :</strong>
             @(Model.DateDebut?.ToString("dd/MM/yyyy") ?? "Non définie")
         </p>
@@ -60,6 +75,3 @@
         Retour à la liste
     </a>
 </div>
-
-
-

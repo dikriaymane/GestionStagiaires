@@ -153,7 +153,11 @@ using Microsoft.AspNetCore.Identity;
                 Nom = model.Nom,
                 Prenom = model.Prenom,
                 Email = model.Email,
+                Service = model.Service,
                 Tuteur = model.Tuteur,
+                EmailTuteur = model.EmailTuteur,
+                TelephoneTuteur = model.TelephoneTuteur,
+                BureauTuteur = model.BureauTuteur,
                 DateDebut = model.DateDebut,
                 DateFin = model.DateFin,
                 UserId = utilisateur.Id

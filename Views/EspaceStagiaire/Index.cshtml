@@ -93,6 +93,66 @@
                 </div>
 
                 <h4>Votre encadrant</h4>
+                    <p class="text-muted">
+                        Retrouvez les coordonnées professionnelles de votre tuteur.
+                    </p>
+
+                    <div class="alert alert-light border mb-0">
+
+                        <div class="mb-3">
+                            <small class="text-muted d-block">Nom</small>
+                            <strong>
+                                @(Model.Tuteur ?? "Non renseigné")
+                            </strong>
+                        </div>
+
+                        <div class="mb-3">
+                            <small class="text-muted d-block">Service</small>
+                            <span>
+                                @(Model.Service ?? "Non renseigné")
+                            </span>
+                        </div>
+
+                        <div class="mb-3">
+                            <small class="text-muted d-block">Email</small>
+
+                            @if (!string.IsNullOrWhiteSpace(Model.EmailTuteur))
+                            {
+                                <a href="mailto:@Model.EmailTuteur">
+                                    <i class="bi bi-envelope-fill me-1"></i>
+                                    @Model.EmailTuteur
+                                </a>
+                            }
+                            else
+                            {
+                                <span>Non renseigné</span>
+                            }
+                        </div>
+
+                        <div class="mb-3">
+                            <small class="text-muted d-block">Téléphone</small>
+
+                            @if (!string.IsNullOrWhiteSpace(Model.TelephoneTuteur))
+                            {
+                                <a href="tel:@Model.TelephoneTuteur">
+                                    <i class="bi bi-telephone-fill me-1"></i>
+                                    @Model.TelephoneTuteur
+                                </a>
+                            }
+                            else
+                            {
+                                <span>Non renseigné</span>
+                            }
+                        </div>
+
+                        <div>
+                            <small class="text-muted d-block">Bureau</small>
+                            <span>
+                                @(Model.BureauTuteur ?? "Non renseigné")
+                            </span>
+                        </div>
+
+                    </div>
 
                 <p class="text-muted">
                     Pour toute question concernant votre stage,
