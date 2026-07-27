@@ -88,6 +88,30 @@ namespace GestionStagiaires.Controllers
 
             _context.DemandesDocuments.Add(demande);
             await _context.SaveChangesAsync();
+            var responsables = await _userManager
+                .GetUsersInRoleAsync("Responsable");
+
+            foreach (var responsable in responsables)
+            {
+                var notification = new Notification
+                {
+                    UserId = responsable.Id,
+                    Titre = "Nouvelle demande de document",
+                    Message =
+                        $"{stagiaire.Prenom} {stagiaire.Nom} a demandé : " +
+                        $"{demande.TypeDocument}.",
+                    DateCreation = DateTime.Now,
+                    EstLue = false,
+                    Lien = Url.Action(
+                        "Gestion",
+                        "DemandesDocuments"
+                    )
+                };
+
+                _context.Notifications.Add(notification);
+            }
+
+            await _context.SaveChangesAsync();
 
             TempData["Succes"] =
                 "Votre demande a été envoyée avec succès.";
@@ -112,7 +136,8 @@ namespace GestionStagiaires.Controllers
         public async Task<IActionResult> Accepter(int id)
         {
             var demande = await _context.DemandesDocuments
-                .FindAsync(id);
+                .Include(d => d.Stagiaire)
+                .FirstOrDefaultAsync(d => d.Id == id);
 
             if (demande == null)
             {
@@ -120,6 +145,25 @@ namespace GestionStagiaires.Controllers
             }
 
             demande.Statut = "Acceptée";
+
+            if (!string.IsNullOrWhiteSpace(demande.Stagiaire?.UserId))
+            {
+                var notification = new Notification
+                {
+                    UserId = demande.Stagiaire.UserId,
+                    Titre = "Demande acceptée",
+                    Message =
+                        $"Votre demande « {demande.TypeDocument} » a été acceptée.",
+                    DateCreation = DateTime.Now,
+                    EstLue = false,
+                    Lien = Url.Action(
+                        "Index",
+                        "DemandesDocuments"
+                    )
+                };
+
+                _context.Notifications.Add(notification);
+            }
 
             await _context.SaveChangesAsync();
 
@@ -135,7 +179,8 @@ namespace GestionStagiaires.Controllers
         public async Task<IActionResult> Refuser(int id)
         {
             var demande = await _context.DemandesDocuments
-                .FindAsync(id);
+                .Include(d => d.Stagiaire)
+                .FirstOrDefaultAsync(d => d.Id == id);
 
             if (demande == null)
             {
@@ -143,6 +188,25 @@ namespace GestionStagiaires.Controllers
             }
 
             demande.Statut = "Refusée";
+
+            if (!string.IsNullOrWhiteSpace(demande.Stagiaire?.UserId))
+            {
+                var notification = new Notification
+                {
+                    UserId = demande.Stagiaire.UserId,
+                    Titre = "Demande refusée",
+                    Message =
+                        $"Votre demande « {demande.TypeDocument} » a été refusée.",
+                    DateCreation = DateTime.Now,
+                    EstLue = false,
+                    Lien = Url.Action(
+                        "Index",
+                        "DemandesDocuments"
+                    )
+                };
+
+                _context.Notifications.Add(notification);
+            }
 
             await _context.SaveChangesAsync();
 

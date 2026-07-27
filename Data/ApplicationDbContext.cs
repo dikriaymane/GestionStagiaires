@@ -31,4 +31,5 @@ public class ApplicationDbContext : IdentityDbContext
             .OnDelete(DeleteBehavior.Cascade);
     }
     public DbSet<DemandeDocument> DemandesDocuments { get; set; } = null!;
+    public DbSet<Notification> Notifications { get; set; } = null!;
 }

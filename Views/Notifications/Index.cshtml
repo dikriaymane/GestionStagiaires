@@ -1,0 +1,108 @@
+@model List<GestionStagiaires.Models.Notification>
+
+@{
+    ViewData["Title"] = "Notifications";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+    <div>
+        <h1 class="fw-bold mb-1">
+            <i class="bi bi-bell-fill me-2"></i>
+            Boîte de notifications
+        </h1>
+
+        <p class="text-muted mb-0">
+            Consultez les messages liés à votre espace.
+        </p>
+    </div>
+
+    @if (Model.Any(n => !n.EstLue))
+    {
+        <form asp-action="ToutMarquerCommeLu"
+              method="post">
+
+            <button type="submit"
+                    class="btn btn-outline-primary">
+                <i class="bi bi-check2-all me-1"></i>
+                Tout marquer comme lu
+            </button>
+        </form>
+    }
+
+</div>
+
+@if (Model.Count == 0)
+{
+    <div class="alert alert-info">
+        Vous n’avez aucune notification.
+    </div>
+}
+else
+{
+    <div class="card border-0 shadow-sm">
+        <div class="list-group list-group-flush">
+
+            @foreach (var notification in Model)
+            {
+                <div class="list-group-item p-4
+                            @(notification.EstLue ? "" : "notification-non-lue")">
+
+                    <div class="d-flex justify-content-between gap-3">
+
+                        <div>
+                            <div class="d-flex align-items-center gap-2 mb-1">
+
+                                <h5 class="mb-0">
+                                    @notification.Titre
+                                </h5>
+
+                                @if (!notification.EstLue)
+                                {
+                                    <span class="badge bg-primary">
+                                        Nouveau
+                                    </span>
+                                }
+
+                            </div>
+
+                            <p class="mb-2">
+                                @notification.Message
+                            </p>
+
+                            <small class="text-muted">
+                                <i class="bi bi-clock me-1"></i>
+                                @(notification.DateCreation
+                                    .ToString("dd/MM/yyyy HH:mm"))
+                            </small>
+                        </div>
+
+                        <div>
+                            @if (!notification.EstLue)
+                            {
+                                <form asp-action="MarquerCommeLue"
+                                      asp-route-id="@notification.Id"
+                                      method="post">
+
+                                    <button type="submit"
+                                            class="btn btn-sm btn-outline-primary">
+                                        Ouvrir
+                                    </button>
+                                </form>
+                            }
+                            else if (!string.IsNullOrWhiteSpace(notification.Lien))
+                            {
+                                <a href="@notification.Lien"
+                                   class="btn btn-sm btn-outline-secondary">
+                                    Consulter
+                                </a>
+                            }
+                        </div>
+
+                    </div>
+                </div>
+            }
+
+        </div>
+    </div>
+}
