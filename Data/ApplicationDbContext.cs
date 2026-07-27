@@ -23,5 +23,12 @@ public class ApplicationDbContext : IdentityDbContext
             .WithOne()
             .HasForeignKey<Stagiaire>(s => s.UserId)
             .OnDelete(DeleteBehavior.SetNull);
+        
+        builder.Entity<DemandeDocument>()
+            .HasOne(d => d.Stagiaire)
+            .WithMany()
+            .HasForeignKey(d => d.StagiaireId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
+    public DbSet<DemandeDocument> DemandesDocuments { get; set; } = null!;
 }
