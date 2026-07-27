@@ -29,7 +29,14 @@ public class ApplicationDbContext : IdentityDbContext
             .WithMany()
             .HasForeignKey(d => d.StagiaireId)
             .OnDelete(DeleteBehavior.Cascade);
+        
+        builder.Entity<DocumentStagiaire>()
+            .HasOne(d => d.Stagiaire)
+            .WithMany()
+            .HasForeignKey(d => d.StagiaireId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
     public DbSet<DemandeDocument> DemandesDocuments { get; set; } = null!;
     public DbSet<Notification> Notifications { get; set; } = null!;
+    public DbSet<DocumentStagiaire> DocumentsStagiaires { get; set; } = null!;
 }

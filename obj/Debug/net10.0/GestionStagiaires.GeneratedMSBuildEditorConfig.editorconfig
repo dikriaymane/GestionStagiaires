@@ -47,6 +47,18 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGVtYW5kZXNEb2N1bWVudHNcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/user/Documents/ProjetStage/GestionStagiaires/Views/DocumentsStagiaires/Depot.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRG9jdW1lbnRzU3RhZ2lhaXJlc1xEZXBvdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/Documents/ProjetStage/GestionStagiaires/Views/DocumentsStagiaires/Liste.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRG9jdW1lbnRzU3RhZ2lhaXJlc1xMaXN0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/Documents/ProjetStage/GestionStagiaires/Views/DocumentsStagiaires/MesDocuments.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRG9jdW1lbnRzU3RhZ2lhaXJlc1xNZXNEb2N1bWVudHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/user/Documents/ProjetStage/GestionStagiaires/Views/EspaceStagiaire/AucuneFiche.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRXNwYWNlU3RhZ2lhaXJlXEF1Y3VuZUZpY2hlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 

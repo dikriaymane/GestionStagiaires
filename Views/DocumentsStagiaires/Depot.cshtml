@@ -1,0 +1,130 @@
+@model GestionStagiaires.ViewModels.DepotDocumentViewModel
+
+@{
+    ViewData["Title"] = "Déposer un document";
+
+    var stagiaire =
+        ViewBag.Stagiaire as GestionStagiaires.Models.Stagiaire;
+}
+
+<div class="row justify-content-center">
+    <div class="col-lg-7">
+
+        <div class="card border-0 shadow-sm">
+
+            <div class="card-header onee-form-header text-white">
+                <h3 class="mb-0">
+                    <i class="bi bi-cloud-arrow-up-fill me-2"></i>
+                    Déposer un document
+                </h3>
+            </div>
+
+            <div class="card-body p-4">
+
+                <div class="alert alert-light border">
+                    <strong>Stagiaire :</strong>
+                    @stagiaire?.Prenom @stagiaire?.Nom
+
+                    <br />
+
+                    <strong>Email :</strong>
+                    @stagiaire?.Email
+                </div>
+
+                <form asp-action="Depot"
+                      method="post"
+                      enctype="multipart/form-data">
+
+                    <input asp-for="StagiaireId"
+                           type="hidden" />
+
+                    <div asp-validation-summary="ModelOnly"
+                         class="alert alert-danger">
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="NomDocument"
+                               class="form-label">
+                        </label>
+
+                        <select asp-for="NomDocument"
+                                class="form-select">
+
+                            <option value="">
+                                Sélectionnez un document
+                            </option>
+
+                            <option value="Attestation de stage">
+                                Attestation de stage
+                            </option>
+
+                            <option value="Convention de stage">
+                                Convention de stage
+                            </option>
+
+                            <option value="Certificat de stage">
+                                Certificat de stage
+                            </option>
+
+                            <option value="Rapport de stage">
+                                Rapport de stage
+                            </option>
+
+                            <option value="Autre document">
+                                Autre document
+                            </option>
+
+                        </select>
+
+                        <span asp-validation-for="NomDocument"
+                              class="text-danger">
+                        </span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Fichier"
+                               class="form-label">
+                        </label>
+
+                        <input asp-for="Fichier"
+                               type="file"
+                               class="form-control"
+                               accept=".pdf,application/pdf" />
+
+                        <div class="form-text">
+                            Format accepté : PDF. Taille maximale : 5 Mo.
+                        </div>
+
+                        <span asp-validation-for="Fichier"
+                              class="text-danger">
+                        </span>
+                    </div>
+
+                    <div class="d-flex gap-2">
+
+                        <button type="submit"
+                                class="btn btn-success">
+                            <i class="bi bi-cloud-arrow-up-fill me-1"></i>
+                            Déposer
+                        </button>
+
+                        <a asp-controller="Stagiaires"
+                           asp-action="Details"
+                           asp-route-id="@Model.StagiaireId"
+                           class="btn btn-secondary">
+                            Annuler
+                        </a>
+
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
