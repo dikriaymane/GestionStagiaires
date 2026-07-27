@@ -29,10 +29,18 @@ namespace GestionStagiaires.Models
         [Display(Name = "Date de fin")]
         public DateTime? DateFin { get; set; }
 
+        [Required(ErrorMessage = "Le service est obligatoire.")]
+        public string? Service { get; set; }
 
         [Required(ErrorMessage = "Le nom du tuteur est obligatoire")]
         [Display(Name = "Tuteur")]
         public string? Tuteur { get; set; }
+
+        public string? EmailTuteur { get; set; }
+
+        public string? TelephoneTuteur { get; set; }
+
+        public string? BureauTuteur { get; set; }
 
         public IEnumerable<ValidationResult> Validate(
             ValidationContext validationContext)

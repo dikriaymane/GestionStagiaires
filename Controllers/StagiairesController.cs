@@ -33,7 +33,8 @@ using Microsoft.AspNetCore.Identity;
                 s.Nom!.Contains(recherche) ||
                 s.Prenom!.Contains(recherche) ||
                 s.Email!.Contains(recherche)||
-                s.Tuteur!.Contains(recherche));
+                s.Tuteur!.Contains(recherche) ||
+                s.Service != null && s.Service.Contains(recherche));
         }
 
         stagiaires = tri switch

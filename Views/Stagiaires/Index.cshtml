@@ -88,6 +88,7 @@ else
                 <th>Prénom</th>
                 <th>Email</th>
                 <th>Tuteur</th>
+                <th>Service</th>
                 <th>Date de début</th>
                 <th>Date de fin</th>
                 <th>Actions</th>
@@ -103,6 +104,7 @@ else
                     <td>@stagiaire.Prenom</td>
                     <td>@stagiaire.Email</td>
                     <td>@stagiaire.Tuteur</td>
+                    <td>@(stagiaire.Service ?? "Non renseigné")</td>
                     <td>
                         @(stagiaire.DateDebut?.ToString("dd/MM/yyyy") ?? "Non définie")
                     </td>
