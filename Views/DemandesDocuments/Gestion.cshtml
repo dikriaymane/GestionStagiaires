@@ -50,29 +50,22 @@ else
                     <thead class="table-dark">
                         <tr>
                             <th>Stagiaire</th>
-                            <th>Email</th>
-                            <th>Document</th>
-                            <th>Message</th>
+                            <th>Document demandé</th>
                             <th>Date</th>
                             <th>Statut</th>
-                            <th>Actions</th>
+                            <th class="text-end">Actions</th>
                         </tr>
                     </thead>
 
                     <tbody>
-
                         @foreach (var demande in Model)
                         {
                             <tr>
-
-                                <td class="fw-semibold">
-                                    @demande.Stagiaire?.Prenom
-                                    @demande.Stagiaire?.Nom
-                                </td>
-
                                 <td>
-                                    @(demande.Stagiaire?.Email
-                                        ?? "Non renseigné")
+                                    <strong>
+                                        @demande.Stagiaire?.Prenom
+                                        @demande.Stagiaire?.Nom
+                                    </strong>
                                 </td>
 
                                 <td>
@@ -80,84 +73,44 @@ else
                                 </td>
 
                                 <td>
-                                    @(string.IsNullOrWhiteSpace(demande.Message)
-                                        ? "Aucun message"
-                                        : demande.Message)
-                                </td>
-
-                                <td>
-                                    @(demande.DateDemande
-                                        .ToString("dd/MM/yyyy HH:mm"))
-                                </td>
-
-                                <td>
-                                    @if (demande.Statut == "Acceptée")
-                                    {
-                                        <span class="badge bg-success">
-                                            Acceptée
-                                        </span>
-                                    }
-                                    else if (demande.Statut == "Refusée")
-                                    {
-                                        <span class="badge bg-danger">
-                                            Refusée
-                                        </span>
-                                    }
-                                    else
-                                    {
-                                        <span class="badge bg-warning text-dark">
-                                            En attente
-                                        </span>
-                                    }
+                                    @demande.DateDemande.ToString("dd/MM/yyyy HH:mm")
                                 </td>
 
                                 <td>
                                     @if (demande.Statut == "En attente")
                                     {
-                                        <div class="d-flex gap-2">
-
-                                            <form asp-action="Accepter"
-                                                  asp-route-id="@demande.Id"
-                                                  method="post">
-                                                <a asp-action="Transmettre"
-                                                asp-route-id="@demande.Id"
-                                                class="btn btn-sm btn-success">
-
-                                                    <i class="bi bi-send-fill me-1"></i>
-                                                    Transmettre le document
-                                                </a>
-
-                                            </form>
-
-                                            <form asp-action="Refuser"
-                                                  asp-route-id="@demande.Id"
-                                                  method="post">
-
-                                                <button type="submit"
-                                                        class="btn btn-danger btn-sm">
-                                                    <i class="bi bi-x-lg"></i>
-                                                    Refuser
-                                                </button>
-
-                                            </form>
-
-                                        </div>
+                                        <span class="badge bg-warning text-dark">
+                                            En attente
+                                        </span>
+                                    }
+                                    else if (demande.Statut == "Traitée" ||
+                                            demande.Statut == "Acceptée")
+                                    {
+                                        <span class="badge bg-success">
+                                            Traitée
+                                        </span>
                                     }
                                     else
                                     {
-                                        <span class="text-muted">
-                                            Traitée
+                                        <span class="badge bg-danger">
+                                            Refusée
                                         </span>
                                     }
                                 </td>
 
+                                <td class="text-end">
+                                    <a asp-action="Details"
+                                    asp-route-id="@demande.Id"
+                                    class="btn btn-sm btn-outline-primary">
+                                        <i class="bi bi-eye-fill me-1"></i>
+                                        Voir
+                                    </a>
+                                </td>
                             </tr>
                         }
-
                     </tbody>
 
                 </table>
-
             </div>
         </div>
     </div>

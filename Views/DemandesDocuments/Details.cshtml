@@ -1,0 +1,167 @@
+@model GestionStagiaires.Models.DemandeDocument
+
+@{
+    ViewData["Title"] = "Détails de la demande";
+}
+
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+
+        <div class="card border-0 shadow-sm">
+
+            <div class="card-header bg-dark text-white">
+                <h3 class="mb-0">
+                    <i class="bi bi-file-earmark-text-fill me-2"></i>
+                    Détails de la demande
+                </h3>
+            </div>
+
+            <div class="card-body p-4">
+
+                <div class="row g-4">
+
+                    <div class="col-md-6">
+                        <p class="text-muted mb-1">Stagiaire</p>
+                        <p class="fw-semibold">
+                            @Model.Stagiaire?.Prenom @Model.Stagiaire?.Nom
+                        </p>
+                    </div>
+
+                    <div class="col-md-6">
+                        <p class="text-muted mb-1">Email</p>
+                        <p class="fw-semibold">
+                            @Model.Stagiaire?.Email
+                        </p>
+                    </div>
+
+                    <div class="col-md-6">
+                        <p class="text-muted mb-1">Document demandé</p>
+                        <p class="fw-semibold">
+                            @Model.TypeDocument
+                        </p>
+                    </div>
+
+                    <div class="col-md-6">
+                        <p class="text-muted mb-1">Date de la demande</p>
+                        <p class="fw-semibold">
+                            @Model.DateDemande.ToString("dd/MM/yyyy à HH:mm")
+                        </p>
+                    </div>
+
+                    <div class="col-12">
+                        <p class="text-muted mb-1">Message</p>
+
+                        <div class="border rounded bg-light p-3">
+                            @if (string.IsNullOrWhiteSpace(Model.Message))
+                            {
+                                <span class="text-muted">
+                                    Aucun message
+                                </span>
+                            }
+                            else
+                            {
+                                @Model.Message
+                            }
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <p class="text-muted mb-1">Statut</p>
+
+                        @if (Model.Statut == "En attente")
+                        {
+                            <span class="badge bg-warning text-dark">
+                                En attente
+                            </span>
+                        }
+                        else if (Model.Statut == "Traitée" ||
+                                 Model.Statut == "Acceptée")
+                        {
+                            <span class="badge bg-success">
+                                Traitée
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-danger">
+                                Refusée
+                            </span>
+                        }
+                    </div>
+
+                    @if (Model.DateTraitement.HasValue)
+                    {
+                        <div class="col-md-6">
+                            <p class="text-muted mb-1">
+                                Date de traitement
+                            </p>
+
+                            <p class="fw-semibold">
+                                @Model.DateTraitement.Value
+                                    .ToString("dd/MM/yyyy à HH:mm")
+                            </p>
+                        </div>
+                    }
+
+                </div>
+
+                @if (Model.DocumentStagiaire != null)
+                {
+                    <hr />
+
+                    <div class="alert alert-success">
+                        <div class="fw-semibold mb-2">
+                            Document transmis
+                        </div>
+
+                        <div class="mb-2">
+                            @Model.DocumentStagiaire.NomFichier
+                        </div>
+
+                        <a href="@Model.DocumentStagiaire.CheminFichier"
+                           target="_blank"
+                           class="btn btn-sm btn-outline-success">
+                            <i class="bi bi-download me-1"></i>
+                            Télécharger
+                        </a>
+                    </div>
+                }
+
+                <div class="d-flex gap-2 mt-4">
+
+                    @if (Model.Statut == "En attente")
+                    {
+                        <a asp-action="Transmettre"
+                           asp-route-id="@Model.Id"
+                           class="btn btn-success">
+                            <i class="bi bi-send-fill me-1"></i>
+                            Transmettre un document
+                        </a>
+
+                        <form asp-action="Refuser"
+                              asp-route-id="@Model.Id"
+                              method="post">
+
+                            @Html.AntiForgeryToken()
+
+                            <button type="submit"
+                                    class="btn btn-danger"
+                                    onclick="return confirm('Refuser cette demande ?');">
+                                <i class="bi bi-x-circle-fill me-1"></i>
+                                Refuser
+                            </button>
+                        </form>
+                    }
+
+                    <a asp-action="Gestion"
+                       class="btn btn-secondary">
+                        Retour
+                    </a>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>

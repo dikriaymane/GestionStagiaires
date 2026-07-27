@@ -384,5 +384,21 @@ namespace GestionStagiaires.Controllers
 
             return RedirectToAction(nameof(Gestion));
         }
+
+        [Authorize(Roles = "Responsable")]
+        public async Task<IActionResult> Details(int id)
+        {
+            var demande = await _context.DemandesDocuments
+                .Include(d => d.Stagiaire)
+                .Include(d => d.DocumentStagiaire)
+                .FirstOrDefaultAsync(d => d.Id == id);
+
+            if (demande == null)
+            {
+                return NotFound();
+            }
+
+            return View(demande);
+        }
     }
 }
