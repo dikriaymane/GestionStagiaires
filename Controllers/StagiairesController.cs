@@ -1,254 +1,167 @@
 using GestionStagiaires.Models;
-using Microsoft.AspNetCore.Mvc;
-using GestionStagiaires.Data;
-using Microsoft.AspNetCore.Authorization;
-namespace GestionStagiaires.Controllers;
+using GestionStagiaires.Services;
 using GestionStagiaires.ViewModels;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
+namespace GestionStagiaires.Controllers;
 
+[Authorize(Roles = "Responsable")]
+public class StagiairesController : Controller
+{
+    private readonly IStagiaireService _stagiaireService;
 
-    [Authorize(Roles = "Responsable")]
-    public class StagiairesController : Controller
+    public StagiairesController(IStagiaireService stagiaireService)
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly ApplicationDbContext _context;
+        _stagiaireService = stagiaireService;
+    }
 
-        public StagiairesController(ApplicationDbContext context,UserManager<IdentityUser> userManager)
+    public async Task<IActionResult> Index(
+        string? recherche,
+        string? tri,
+        int page = 1)
+    {
+        const int taillePage = 5;
+
+        if (page < 1)
         {
-            _context = context;
-            _userManager = userManager;
-        }
-        public IActionResult Index(string? recherche,string? tri,int page = 1)
-        {
-            int taillePage = 5;
-            var stagiaires = _context.Stagiaires.AsQueryable();
-
-            if (!string.IsNullOrWhiteSpace(recherche))
-            {
-                stagiaires = stagiaires.Where(s =>
-                    s.Nom!.Contains(recherche) ||
-                    s.Prenom!.Contains(recherche) ||
-                    s.Email!.Contains(recherche)||
-                    s.Tuteur!.Contains(recherche) ||
-                    s.Service != null && s.Service.Contains(recherche));
-            }
-
-            stagiaires = tri switch
-            {
-                "nom" => stagiaires.OrderBy(s => s.Nom),
-                "prenom" => stagiaires.OrderBy(s => s.Prenom),
-                "email" => stagiaires.OrderBy(s => s.Email),
-                "id_desc" => stagiaires.OrderByDescending(s => s.Id),
-                _ => stagiaires.OrderBy(s => s.Id)
-            };
-
-            int nombreTotal = stagiaires.Count();
-            List<Stagiaire> liste = stagiaires
-                .Skip((page - 1) * taillePage)
-                .Take(taillePage)
-                .ToList();
-
-            ViewBag.Recherche = recherche;
-            ViewBag.Tri = tri;
-            ViewBag.PageActuelle = page;
-            ViewBag.NombrePages =
-                (int)Math.Ceiling(nombreTotal / (double)taillePage);
-
-            return View(liste);
+            page = 1;
         }
 
-        [HttpGet]
-        public IActionResult Create()
+        var resultat = await _stagiaireService.GetPaginatedAsync(
+            recherche,
+            tri,
+            page,
+            taillePage);
+
+        ViewBag.Recherche = recherche;
+        ViewBag.Tri = tri;
+        ViewBag.PageActuelle = page;
+        ViewBag.NombrePages = resultat.NombrePages;
+
+        return View(resultat.Stagiaires);
+    }
+
+    [HttpGet]
+    public IActionResult Create()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Create(
+        CreateStagiaireViewModel model)
+    {
+        if (!ModelState.IsValid)
         {
-            return View(new CreateStagiaireViewModel());
+            return View(model);
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(CreateStagiaireViewModel model)
+        if (await _stagiaireService.EmailExistsAsync(model.Email))
         {
-            if (model.DateDebut.HasValue && model.DateFin.HasValue && model.DateFin.Value < model.DateDebut.Value)
-            {
-                ModelState.AddModelError(nameof(model.DateFin),"La date de fin doit être postérieure à la date de début.");
-            }
-            else if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-
-            var utilisateurExistant = await _userManager.FindByEmailAsync(model.Email!);
-
-            if (utilisateurExistant != null)
-            {
-                ModelState.AddModelError(nameof(model.Email), "Un compte existe déjà avec cette adresse email.");
-                return View(model);
-            }
-
-            var utilisateur = new IdentityUser{ UserName = model.Email, Email = model.Email, EmailConfirmed = true};
-
-            var resultatCreation =
-                await _userManager.CreateAsync(utilisateur,model.MotDePasse!);
-
-            if (!resultatCreation.Succeeded)
-            {
-                foreach (var erreur in resultatCreation.Errors)
-                {
-                    ModelState.AddModelError(nameof(model.MotDePasse),erreur.Description);
-                }
-                return View(model);
-            }
-
-            var resultatRole = await _userManager.AddToRoleAsync(utilisateur,"Stagiaire");
-
-            if (!resultatRole.Succeeded)
-            {
-                await _userManager.DeleteAsync(utilisateur);
-                foreach (var erreur in resultatRole.Errors)
-                {
-                    ModelState.AddModelError( string.Empty, erreur.Description);
-                }
-                return View(model);
-            }
-
-            var stagiaire = new Stagiaire {
-                Nom = model.Nom,
-                Prenom = model.Prenom,
-                Email = model.Email,
-                Service = model.Service,
-                Tuteur = model.Tuteur,
-                EmailTuteur = model.EmailTuteur,
-                TelephoneTuteur = model.TelephoneTuteur,
-                BureauTuteur = model.BureauTuteur,
-                DateDebut = model.DateDebut,
-                DateFin = model.DateFin,
-                UserId = utilisateur.Id
-                };
-
-            try
-            {
-                _context.Stagiaires.Add(stagiaire);
-                await _context.SaveChangesAsync();
-            }
-            catch
-            {
-                await _userManager.DeleteAsync(utilisateur);
-                ModelState.AddModelError(
-                    string.Empty,
-                    "Une erreur est survenue pendant l’enregistrement du stagiaire."
-                );
-
-                return View(model);
-            }
-
-            TempData["Succes"] = "Le stagiaire et son compte ont été créés avec succès.";
-            return RedirectToAction(nameof(Index));
-        }
-
-        [HttpGet]
-        public IActionResult Edit(int id)
-        {
-            Stagiaire? stagiaire = _context.Stagiaires.Find(id);
-
-            if (stagiaire == null)
-            {
-                return NotFound();
-            }
-            return View(stagiaire);
-        }
-
-        [HttpPost]
-        public IActionResult Edit(Stagiaire stagiaire)
-        {
-            if (stagiaire.DateDebut.HasValue && stagiaire.DateFin.HasValue && stagiaire.DateFin < stagiaire.DateDebut)
-            {
-                ModelState.AddModelError(
-                    "DateFin",
-                    "La date de fin doit être postérieure à la date de début."
-                );
-            }
-            if (!ModelState.IsValid)
-            {
-                return View(stagiaire);
-            }
-
-            _context.Stagiaires.Update(stagiaire);
-            _context.SaveChanges();
-
-            TempData["Succes"] = "Le stagiaire a été modifié avec succès.";
-
-            return RedirectToAction("Index");
-        }
-
-        [HttpGet]
-        public IActionResult Delete(int id)
-        {
-            Stagiaire? stagiaire = _context.Stagiaires.Find(id);
-
-            if (stagiaire == null)
-            {
-                return NotFound();
-            }
-
-            return View(stagiaire);
-        }
-        [HttpPost, ActionName("Delete")]
-        public IActionResult DeleteConfirmed(int id)
-        {
-            Stagiaire? stagiaire = _context.Stagiaires.Find(id);
-
-            if (stagiaire != null)
-            {
-                _context.Stagiaires.Remove(stagiaire);
-                _context.SaveChanges();
-
-                TempData["Succes"] = "Le stagiaire a été supprimé avec succès.";
-            }
-
-            return RedirectToAction("Index");
-        }
-
-        [HttpGet]
-        public IActionResult Details(int id)
-        {
-            Stagiaire? stagiaire = _context.Stagiaires.Find(id);
-
-            if (stagiaire == null)
-            {
-                return NotFound();
-            }
-
-            return View(stagiaire);
-        }
-        [Authorize(Roles = "Responsable")]
-        public async Task<IActionResult> Dashboard()
-        {
-            DateTime aujourdHui = DateTime.Today;
-
-            var model = new DashboardResponsableViewModel
-            {
-                TotalStagiaires = await _context.Stagiaires.CountAsync(),
-
-                StagesEnCours = await _context.Stagiaires.CountAsync(s =>
-                    s.DateDebut.HasValue &&
-                    s.DateFin.HasValue &&
-                    s.DateDebut.Value <= aujourdHui &&
-                    s.DateFin.Value >= aujourdHui),
-
-                StagesTermines = await _context.Stagiaires.CountAsync(s =>
-                    s.DateFin.HasValue &&
-                    s.DateFin.Value < aujourdHui),
-
-                StagesAVenir = await _context.Stagiaires.CountAsync(s =>
-                    s.DateDebut.HasValue &&
-                    s.DateDebut.Value > aujourdHui),
-
-                DemandesEnAttente = await _context.DemandesDocuments.CountAsync(d =>
-                    d.Statut == "En attente")
-            };
+            ModelState.AddModelError(
+                nameof(model.Email),
+                "Un stagiaire utilisant cette adresse email existe déjà.");
 
             return View(model);
         }
+
+        await _stagiaireService.CreateAsync(model);
+
+        TempData["Succes"] =
+            "Le stagiaire a été créé avec succès.";
+
+        return RedirectToAction(nameof(Index));
     }
 
+    [HttpGet]
+    public async Task<IActionResult> Edit(int id)
+    {
+        var stagiaire = await _stagiaireService.GetByIdAsync(id);
+
+        if (stagiaire == null)
+        {
+            return NotFound();
+        }
+
+        return View(stagiaire);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Edit(Stagiaire stagiaire)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(stagiaire);
+        }
+
+        var modificationReussie =
+            await _stagiaireService.UpdateAsync(stagiaire);
+
+        if (!modificationReussie)
+        {
+            return NotFound();
+        }
+
+        TempData["Succes"] =
+            "Le stagiaire a été modifié avec succès.";
+
+        return RedirectToAction(nameof(Index));
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var stagiaire = await _stagiaireService.GetByIdAsync(id);
+
+        if (stagiaire == null)
+        {
+            return NotFound();
+        }
+
+        return View(stagiaire);
+    }
+
+    [HttpPost]
+    [ActionName("Delete")]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> DeleteConfirmed(int id)
+    {
+        var suppressionReussie =
+            await _stagiaireService.DeleteAsync(id);
+
+        if (!suppressionReussie)
+        {
+            return NotFound();
+        }
+
+        TempData["Succes"] =
+            "Le stagiaire a été supprimé avec succès.";
+
+        return RedirectToAction(nameof(Index));
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Details(int id)
+    {
+        var stagiaire = await _stagiaireService.GetByIdAsync(id);
+
+        if (stagiaire == null)
+        {
+            return NotFound();
+        }
+
+        return View(stagiaire);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Dashboard()
+    {
+        var model =
+            await _stagiaireService.GetDashboardAsync();
+
+        return View(model);
+    }
+}

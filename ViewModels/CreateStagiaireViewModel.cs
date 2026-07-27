@@ -10,10 +10,9 @@ namespace GestionStagiaires.ViewModels
         [Required(ErrorMessage = "Le prénom est obligatoire.")]
         public string? Prenom { get; set; }
 
-        [Required(ErrorMessage = "L’adresse email est obligatoire.")]
-        [EmailAddress(ErrorMessage = "L’adresse email n’est pas valide.")]
-        public string? Email { get; set; }
-
+        [Required(ErrorMessage = "L'adresse email est obligatoire.")]
+        [EmailAddress(ErrorMessage = "L'adresse email n'est pas valide.")]
+        public string Email { get; set; } = string.Empty;
         [Required(ErrorMessage = "Le service est obligatoire.")]
         public string? Service { get; set; }
 

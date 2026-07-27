@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace GestionStagiaires.Models
 {
-    public class Stagiaire
+    public class Stagiaire : IValidatableObject
     {
         public int Id { get; set; }
         public string? UserId { get; set; }
