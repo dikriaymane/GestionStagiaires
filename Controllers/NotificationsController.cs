@@ -12,9 +12,7 @@ namespace GestionStagiaires.Controllers
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
 
-        public NotificationsController(
-            ApplicationDbContext context,
-            UserManager<IdentityUser> userManager)
+        public NotificationsController(ApplicationDbContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
             _userManager = userManager;
@@ -28,12 +26,10 @@ namespace GestionStagiaires.Controllers
             {
                 return Challenge();
             }
-
             var notifications = await _context.Notifications
                 .Where(n => n.UserId == utilisateur.Id)
                 .OrderByDescending(n => n.DateCreation)
                 .ToListAsync();
-
             return View(notifications);
         }
 
@@ -42,7 +38,6 @@ namespace GestionStagiaires.Controllers
         public async Task<IActionResult> MarquerCommeLue(int id)
         {
             var utilisateur = await _userManager.GetUserAsync(User);
-
             if (utilisateur == null)
             {
                 return Challenge();

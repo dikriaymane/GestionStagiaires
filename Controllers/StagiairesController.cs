@@ -50,8 +50,7 @@ public class StagiairesController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(
-        CreateStagiaireViewModel model)
+    public async Task<IActionResult> Create(CreateStagiaireViewModel model)
     {
         if (!ModelState.IsValid)
         {
@@ -67,7 +66,16 @@ public class StagiairesController : Controller
             return View(model);
         }
 
-        await _stagiaireService.CreateAsync(model);
+        var creationReussie = await _stagiaireService.CreateAsync(model);
+
+        if (!creationReussie)
+        {
+            ModelState.AddModelError(
+                "",
+                "Impossible de créer le compte du stagiaire.");
+
+            return View(model);
+        }
 
         TempData["Succes"] =
             "Le stagiaire a été créé avec succès.";

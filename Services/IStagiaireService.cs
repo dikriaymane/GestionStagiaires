@@ -11,7 +11,7 @@ public interface IStagiaireService
 
     Task<bool> EmailExistsAsync(string email);
 
-    Task CreateAsync(CreateStagiaireViewModel model);
+    Task<bool> CreateAsync(CreateStagiaireViewModel model);
 
     Task<bool> UpdateAsync(Stagiaire stagiaire);
 

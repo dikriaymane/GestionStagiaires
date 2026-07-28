@@ -27,19 +27,14 @@ namespace GestionStagiaires.ViewModels
         [Display(Name = "Date de fin")]
         public DateTime? DateFin { get; set; }
 
-        [Required(ErrorMessage = "Le mot de passe temporaire est obligatoire.")]
+        [Required]
         [DataType(DataType.Password)]
-        [Display(Name = "Mot de passe temporaire")]
-        public string? MotDePasse { get; set; }
+        public string MotDePasse { get; set; } = string.Empty;
 
-        [Required(ErrorMessage = "Veuillez confirmer le mot de passe.")]
+        [Required]
         [DataType(DataType.Password)]
-        [Compare(
-            nameof(MotDePasse),
-            ErrorMessage = "Les deux mots de passe ne correspondent pas."
-        )]
-        [Display(Name = "Confirmation du mot de passe")]
-        public string? ConfirmationMotDePasse { get; set; }
+        [Compare(nameof(MotDePasse), ErrorMessage = "Les mots de passe ne correspondent pas.")]
+        public string ConfirmationMotDePasse { get; set; } = string.Empty;
 
         [EmailAddress(ErrorMessage = "L’adresse email du tuteur n’est pas valide.")]
         [Display(Name = "Email du tuteur")]

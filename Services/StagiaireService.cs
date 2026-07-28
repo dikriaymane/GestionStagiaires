@@ -2,16 +2,21 @@ using GestionStagiaires.Data;
 using GestionStagiaires.Models;
 using GestionStagiaires.ViewModels;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace GestionStagiaires.Services;
 
 public class StagiaireService : IStagiaireService
 {
     private readonly ApplicationDbContext _context;
+    private readonly UserManager<IdentityUser> _userManager;
 
-    public StagiaireService(ApplicationDbContext context)
+    public StagiaireService(
+        ApplicationDbContext context,
+        UserManager<IdentityUser> userManager)
     {
         _context = context;
+        _userManager = userManager;
     }
 
     public async Task<Stagiaire?> GetByIdAsync(int id)
@@ -34,25 +39,55 @@ public class StagiaireService : IStagiaireService
             .AnyAsync(s => s.Email == email);
     }
 
-    public async Task CreateAsync(
-        CreateStagiaireViewModel model)
+    public async Task<bool> CreateAsync(
+    CreateStagiaireViewModel model)
     {
+        var utilisateur = new IdentityUser
+        {
+            UserName = model.Email,
+            Email = model.Email,
+            EmailConfirmed = true
+        };
+
+        var resultatCreation = await _userManager.CreateAsync(
+            utilisateur,
+            model.MotDePasse);
+
+        if (!resultatCreation.Succeeded)
+        {
+            return false;
+        }
+
+        var resultatRole = await _userManager.AddToRoleAsync(
+            utilisateur,
+            "Stagiaire");
+
+        if (!resultatRole.Succeeded)
+        {
+            await _userManager.DeleteAsync(utilisateur);
+            return false;
+        }
+
         var stagiaire = new Stagiaire
         {
             Nom = model.Nom,
             Prenom = model.Prenom,
             Email = model.Email,
             Tuteur = model.Tuteur,
+            EmailTuteur = model.EmailTuteur,
+            TelephoneTuteur = model.TelephoneTuteur,
+            BureauTuteur = model.BureauTuteur,
             Service = model.Service,
             DateDebut = model.DateDebut,
-            DateFin = model.DateFin
+            DateFin = model.DateFin,
+            UserId = utilisateur.Id
         };
 
         _context.Stagiaires.Add(stagiaire);
-
         await _context.SaveChangesAsync();
-    }
 
+        return true;
+    }
     public async Task<bool> UpdateAsync(Stagiaire stagiaire)
     {
         var stagiaireExistant =
@@ -68,6 +103,9 @@ public class StagiaireService : IStagiaireService
         stagiaireExistant.Prenom = stagiaire.Prenom;
         stagiaireExistant.Email = stagiaire.Email;
         stagiaireExistant.Tuteur = stagiaire.Tuteur;
+        stagiaireExistant.EmailTuteur = stagiaire.EmailTuteur;
+        stagiaireExistant.TelephoneTuteur = stagiaire.TelephoneTuteur;
+        stagiaireExistant.BureauTuteur = stagiaire.BureauTuteur;
         stagiaireExistant.Service = stagiaire.Service;
         stagiaireExistant.DateDebut = stagiaire.DateDebut;
         stagiaireExistant.DateFin = stagiaire.DateFin;
